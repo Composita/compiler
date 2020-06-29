@@ -5,7 +5,7 @@
   "main": "dist/cjs/compiler.js",
   "module": "dist/esm/compiler.js",
   "types": "dist/types/compiler.d.ts",
-  "type": "module",
+  "type": "commonjs",
   "files": [
     "dist",
     "src"
