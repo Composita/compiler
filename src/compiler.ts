@@ -1,11 +1,11 @@
-import { Lexer } from './lexer/lexer';
-import { Parser } from './parser/parser';
-import { ProgramNode } from '../data/ast/program';
-import { IL } from '../data/il/il';
-import { SymbolTable } from '../data/symbol/symbol';
-import { CompilerDiagnosis } from '../diagnosis/diagnosis';
-import { Checker } from './checker/checker';
-import { Generator } from './generator/generator';
+import { Lexer } from '@composita/lexer';
+import { Parser } from '@composita/parser';
+import { ProgramNode } from '@composita/ast';
+import { IL } from '@composita/il';
+import { SymbolTable } from '@composita/symbols';
+import { CompilerDiagnosis } from '@composita/diagnosis';
+import { Checker } from '@composita/checker';
+import { Generator } from '@composita/generator';
 
 export class Compiler {
     async compile(uri: string, code: string): Promise<IL> {
