@@ -1,6 +1,6 @@
 {
   "name": "@composita/compiler",
-  "version": "0.1.0-dev.2",
+  "version": "0.1.0-dev.3",
   "description": "Composita language compiler.",
   "main": "dist/cjs/compiler.js",
   "module": "dist/esm/compiler.js",
@@ -62,10 +62,10 @@
     "@composita/generator": "^0.1.0-dev.3",
     "@composita/il": "^0.1.0-dev.1",
     "@composita/lexer": "^0.1.0-dev.2",
-    "@composita/parser": "^0.1.0-dev.2",
+    "@composita/parser": "^0.1.0-dev.3",
     "@composita/source-location": "^0.1.0-dev.5",
     "@composita/symbols": "^0.1.0-dev.3",
-    "@composita/tokens": "^0.1.0-dev.3",
+    "@composita/tokens": "^0.1.0-dev.4",
     "@composita/ts-utility-types": "^0.1.0-dev.5",
     "vscode-languageserver-types": "^3.15.1"
   },
