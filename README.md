@@ -1,8 +1,8 @@
-# Composita language lexer
+# Composita language compiler
 
-The repository contains the lexer for the Composita language implemented in typescript.
+The repository contains the compiler for the Composita language implemented in typescript.
 
-![Build Badge](https://github.com/composita/lexer/workflows/build/badge.svg)
+![Build Badge](https://github.com/composita/compiler/workflows/build/badge.svg)
 
 ## License
 
