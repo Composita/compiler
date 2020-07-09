@@ -82,10 +82,10 @@
     "@composita/ts-utility-types" "^0.1.0-dev.7"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/parser@^0.1.0-dev.10":
-  version "0.1.0-dev.10"
-  resolved "https://registry.yarnpkg.com/@composita/parser/-/parser-0.1.0-dev.10.tgz#5267352d3740c8abc59747bcfbc9aa5d9e3dc02c"
-  integrity sha512-LakZrWAGlB5Ku+HdJQrclGEFg0BGsvayPXqA8P8rxetIuY8nhfclTqFSiMndrZpV2TVcXjjAfNCepcNzpmbN6Q==
+"@composita/parser@^0.1.0-dev.11":
+  version "0.1.0-dev.11"
+  resolved "https://registry.yarnpkg.com/@composita/parser/-/parser-0.1.0-dev.11.tgz#69cf35bdede844ac4f503258b35bab98281d79c4"
+  integrity sha512-CJ9+1lyIFPr/cGyHl5pkSTe+3kGSSIubrce4CMVmfbfpzGfa1wwc5rawVX41mxQgJST8AwNmLlrgZxHGnfGZlw==
   dependencies:
     "@composita/ast" "0.1.0-dev.20"
     "@composita/diagnosis" "^0.1.0-dev.4"
