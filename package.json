@@ -1,6 +1,6 @@
 {
   "name": "@composita/compiler",
-  "version": "0.1.0-dev.10",
+  "version": "0.1.0-dev.11",
   "description": "Composita language compiler.",
   "main": "dist/cjs/compiler.js",
   "module": "dist/esm/compiler.js",
@@ -59,7 +59,7 @@
     "@composita/ast": "^0.1.0-dev.31",
     "@composita/checker": "^0.1.0-dev.9",
     "@composita/diagnosis": "^0.1.0-dev.8",
-    "@composita/generator": "^0.1.0-dev.8",
+    "@composita/generator": "^0.1.0-dev.9",
     "@composita/il": "^0.1.0-dev.7",
     "@composita/lexer": "^0.1.0-dev.14",
     "@composita/parser": "^0.1.0-dev.20",
