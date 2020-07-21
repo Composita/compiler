@@ -12,13 +12,13 @@ export class Compiler {
         const diagnosis: Diagnosis = new CompilerDiagnosis();
         const lexer: Lexer = new Lexer(diagnosis, uri, code);
         const parser: Parser = new Parser(diagnosis, lexer);
-        const ast: ProgramNode = await parser.parse();
+        const ast: ProgramNode = parser.parse();
         if (diagnosis.hasErrors()) {
             diagnosis.print(console.log);
             throw new Error('Error during Lexing and/or Parsing. See console.log.');
         }
         const checker: Checker = new Checker();
-        const symbols: SymbolTable = await checker.check(ast);
+        const symbols: SymbolTable = checker.check(uri, ast);
         const generator: Generator = new Generator();
         return generator.generate(symbols);
     }
