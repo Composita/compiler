@@ -1,6 +1,6 @@
 {
   "name": "@composita/compiler",
-  "version": "0.1.0-dev.14",
+  "version": "0.1.0-dev.15",
   "description": "Composita language compiler.",
   "main": "dist/cjs/compiler.js",
   "module": "dist/esm/compiler.js",
@@ -21,7 +21,8 @@
     "lint": "eslint 'src/**/*.ts' 'test/**/*.ts'",
     "prepublishOnly": "yarn test && yarn build",
     "postpublish": "yarn clean",
-    "test": "tape -r ts-node/register 'test/**/*.ts' && yarn lint"
+    "test": "tape -r ts-node/register 'test/**/*.ts' && yarn lint",
+    "update:dev": "yarn add @composita/ast@dev @composita/checker@dev @composita/diagnosis@dev @composita/generator@dev @composita/il@dev @composita/lexer@dev @composita/parser@dev @composita/source-location@dev @composita/symbols@dev @composita/tokens@dev @composita/ts-utility-types@dev"
   },
   "repository": {
     "type": "git",
@@ -59,7 +60,7 @@
     "@composita/ast": "^0.1.0-dev.31",
     "@composita/checker": "^0.1.0-dev.13",
     "@composita/diagnosis": "^0.1.0-dev.8",
-    "@composita/generator": "^0.1.0-dev.11",
+    "@composita/generator": "^0.1.0-dev.12",
     "@composita/il": "^0.1.0-dev.15",
     "@composita/lexer": "^0.1.0-dev.14",
     "@composita/parser": "^0.1.0-dev.20",
