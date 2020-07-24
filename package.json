@@ -1,6 +1,6 @@
 {
   "name": "@composita/compiler",
-  "version": "0.1.0-dev.15",
+  "version": "0.1.0-dev.16",
   "description": "Composita language compiler.",
   "main": "dist/cjs/compiler.js",
   "module": "dist/esm/compiler.js",
@@ -43,7 +43,7 @@
   },
   "homepage": "https://www.composita.dev/",
   "devDependencies": {
-    "@types/node": "^14.0.24",
+    "@types/node": "^14.0.25",
     "@types/tape": "^4.13.0",
     "@typescript-eslint/eslint-plugin": "^3.7.0",
     "@typescript-eslint/parser": "^3.7.0",
@@ -58,12 +58,12 @@
   },
   "dependencies": {
     "@composita/ast": "^0.1.0-dev.31",
-    "@composita/checker": "^0.1.0-dev.13",
+    "@composita/checker": "^0.1.0-dev.14",
     "@composita/diagnosis": "^0.1.0-dev.8",
-    "@composita/generator": "^0.1.0-dev.12",
+    "@composita/generator": "^0.1.0-dev.13",
     "@composita/il": "^0.1.0-dev.15",
-    "@composita/lexer": "^0.1.0-dev.14",
-    "@composita/parser": "^0.1.0-dev.20",
+    "@composita/lexer": "^0.1.0-dev.15",
+    "@composita/parser": "^0.1.0-dev.21",
     "@composita/source-location": "^0.1.0-dev.5",
     "@composita/symbols": "^0.1.0-dev.44",
     "@composita/tokens": "^0.1.0-dev.7",
