@@ -60,7 +60,7 @@
     "@composita/ast": "^0.1.0-dev.31",
     "@composita/checker": "^0.1.0-dev.14",
     "@composita/diagnosis": "^0.1.0-dev.8",
-    "@composita/generator": "^0.1.0-dev.13",
+    "@composita/generator": "^0.1.0-dev.14",
     "@composita/il": "^0.1.0-dev.15",
     "@composita/lexer": "^0.1.0-dev.15",
     "@composita/parser": "^0.1.0-dev.21",

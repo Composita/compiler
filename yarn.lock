@@ -51,10 +51,10 @@
     "@composita/ts-utility-types" "^0.1.0-dev.7"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/generator@^0.1.0-dev.13":
-  version "0.1.0-dev.13"
-  resolved "https://registry.yarnpkg.com/@composita/generator/-/generator-0.1.0-dev.13.tgz#5cd34c1b1de036e2b3aa8a63c7a2915bea47faf8"
-  integrity sha512-hKqpr9tWBw5zx34v4CoOyEHatlPotbCJgjNXO71JYFy5Yly4+H/2FxLQ+elThBABkGSWmgOAAb9kKJ9nBf9IjQ==
+"@composita/generator@^0.1.0-dev.14":
+  version "0.1.0-dev.14"
+  resolved "https://registry.yarnpkg.com/@composita/generator/-/generator-0.1.0-dev.14.tgz#7e61891943d4b8bec6bbf6a88db47a39b4e47f34"
+  integrity sha512-u30ySUmjMJ3K2diIxdmEzQ8xrHapq3d6vjMq+ekcmodeofG4q0XHpzmO8rS9pavPIVIyuYQPSqhfda4op1j/gg==
   dependencies:
     "@composita/ast" "^0.1.0-dev.31"
     "@composita/checker" "^0.1.0-dev.14"
