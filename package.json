@@ -1,6 +1,6 @@
 {
   "name": "@composita/compiler",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Composita language compiler.",
   "main": "dist/cjs/compiler.js",
   "module": "dist/esm/compiler.js",
@@ -42,34 +42,34 @@
   },
   "homepage": "https://www.composita.dev/",
   "devDependencies": {
-    "@types/node": "^14.0.25",
+    "@types/node": "^14.14.6",
     "@types/tape": "^4.13.0",
-    "@typescript-eslint/eslint-plugin": "^3.7.0",
-    "@typescript-eslint/parser": "^3.7.0",
-    "eslint": "^7.5.0",
-    "eslint-config-prettier": "^6.11.0",
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
+    "eslint": "^7.12.1",
+    "eslint-config-prettier": "^6.15.0",
     "eslint-plugin-prettier": "^3.1.4",
-    "prettier": "^2.0.5",
+    "prettier": "^2.1.2",
     "rimraf": "^3.0.2",
     "tape": "^5.0.1",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.9.7"
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.5"
   },
   "dependencies": {
     "@composita/ast": "^0.2.0",
-    "@composita/checker": "^0.2.0",
+    "@composita/checker": "^0.2.3",
     "@composita/diagnosis": "^0.2.0",
-    "@composita/generator": "^0.2.0",
-    "@composita/il": "^0.2.0",
+    "@composita/generator": "^0.2.1",
+    "@composita/il": "^0.2.3",
     "@composita/lexer": "^0.2.0",
     "@composita/parser": "^0.2.0",
     "@composita/source-location": "^0.2.0",
-    "@composita/symbols": "^0.2.0",
+    "@composita/symbols": "^0.2.2",
     "@composita/tokens": "^0.2.0",
     "@composita/ts-utility-types": "^0.2.0",
     "vscode-languageserver-types": "^3.15.1"
   },
   "peerDependencies": {
-    "@composita/il": "^0.2.0"
+    "@composita/il": "^0.2.3"
   }
 }
