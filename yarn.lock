@@ -32,14 +32,14 @@
     "@composita/ts-utility-types" "^0.2.0"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/checker@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@composita/checker/-/checker-0.2.5.tgz#0d0703ef47ae86d3e79ff69fe72411c80da6fdfb"
-  integrity sha512-KdwI+zuD8DDcpfF8jZj12H9liOvI197UzuaTgUuBwqBYELZgjSzHi9k3j+YjP4xnknLGuzU1V0lyqizf2CP5BQ==
+"@composita/checker@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@composita/checker/-/checker-0.2.6.tgz#5310af1b2ff861a8307c81d2ccd5293cc2d220cd"
+  integrity sha512-QNtkcTy4L1gBiM9zeqBEmGhcHrVu+snKXRMJ7mkrSnn/EPZAAzOKnA40ToIgSN/tbZwSycjBzO7vdUQv16Lzpw==
   dependencies:
     "@composita/ast" "^0.2.4"
     "@composita/source-location" "^0.2.0"
-    "@composita/symbols" "^0.2.5"
+    "@composita/symbols" "^0.2.6"
     "@composita/ts-utility-types" "^0.2.0"
     vscode-languageserver-types "^3.15.1"
 
@@ -51,22 +51,22 @@
     "@composita/ts-utility-types" "^0.2.0"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/generator@^0.3.1":
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/@composita/generator/-/generator-0.3.1.tgz#4f5f67f247f727ad65f89c2dc891a2b3f76f4dac"
-  integrity sha512-WcVc+TmjdfJVqZj+Bk9XaobvmTqs74XA+X8Np7oOT6DIRDnizBQ6+1KRIVaFy5pZWl6a8WQUKoOavJbQqIWeiw==
+"@composita/generator@^0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@composita/generator/-/generator-0.3.3.tgz#a9689f37c5ff165f777dc6a682ff10203f591898"
+  integrity sha512-DkhEKYVg8q7Sq3kVbpgBuYvyHpxo4pDDh9t9Q1cXOODhJnDihnC+JtUh35C4OZFBvrvAkYVdFjb0E+LKTdBHZQ==
   dependencies:
     "@composita/ast" "^0.2.4"
-    "@composita/il" "^0.3.7"
+    "@composita/il" "^0.3.10"
     "@composita/source-location" "^0.2.0"
-    "@composita/symbols" "^0.2.5"
+    "@composita/symbols" "^0.2.6"
     "@composita/ts-utility-types" "^0.2.0"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/il@^0.3.7":
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/@composita/il/-/il-0.3.7.tgz#f41df339dd37d229148a66ed496b217300ced2cd"
-  integrity sha512-FKLLfh2buRSxT3/sf0ouQ1W6DGmEReI7v8yXoA6MD5Ph9/QHf2Wi4wopKbdTs2yilXYXdJ4nwEvtZlITUy12qg==
+"@composita/il@^0.3.10":
+  version "0.3.10"
+  resolved "https://registry.yarnpkg.com/@composita/il/-/il-0.3.10.tgz#695903ecafbc788c1c9f53344bc55869206aa2af"
+  integrity sha512-k0NYY0odBp70fbSDypaDRzGGvmna0aXQCxWp9Bjo98f+Nwpmz5Gp8E0oU3GnLSkIFX1DKJ7dt4g4vuAN2vaiZg==
   dependencies:
     "@composita/ts-utility-types" "^0.2.0"
 
@@ -102,10 +102,10 @@
     "@composita/ts-utility-types" "^0.2.0"
     vscode-languageserver-types "^3.15.1"
 
-"@composita/symbols@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@composita/symbols/-/symbols-0.2.5.tgz#0e62e065e02c400d6daac6cac39a3d520466c211"
-  integrity sha512-TDdlVYG8ArjXPBVbBPwk590J96+13RSDp+0fofs0v8THfkI3GR9Iub4oB0umyNBQncGzhzAbRQjJUMA3NmoSaQ==
+"@composita/symbols@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@composita/symbols/-/symbols-0.2.6.tgz#d2e62bfd1b4f4d619de7a0a0b7d4d26e18687587"
+  integrity sha512-nGLm01RlC+ytorfzoaG1kjk2jfcFh7CcoVcqAbV2H8Og7WWjhKXVDDTDPM1GDW05JRFlazs1IDSVOOTfVkmqqA==
   dependencies:
     "@composita/ast" "^0.2.4"
     "@composita/source-location" "^0.2.0"
@@ -1196,10 +1196,10 @@ prettier-linter-helpers@^1.0.0:
   dependencies:
     fast-diff "^1.1.2"
 
-prettier@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.0.tgz#8a03c7777883b29b37fb2c4348c66a78e980418b"
-  integrity sha512-yYerpkvseM4iKD/BXLYUkQV5aKt4tQPqaGW6EsZjzyu0r7sVZZNPJW4Y8MyKmicp6t42XUPcBVA+H6sB3gqndw==
+prettier@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-2.2.1.tgz#795a1a78dd52f073da0cd42b21f9c91381923ff5"
+  integrity sha512-PqyhM2yCjg/oKkFPtTGUojv7gnZAoG80ttl45O6x2Ug/rMJw4wcc9k6aaf2hibP7BGVCCM33gZoGjyvt9mm16Q==
 
 progress@^2.0.0:
   version "2.0.3"
