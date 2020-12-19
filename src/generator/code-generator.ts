@@ -64,6 +64,7 @@ import {
 } from '../symbols/symbols';
 import { Metadata } from './metadata';
 import { ILAssembler } from './il-assembler';
+import { getOrThrow } from '@composita/ts-utility-types';
 
 export class CodeGeneratorVisitor extends Visitor {
     constructor(protected symbols: SymbolTable, public scope: ScopeSymbolType, protected metadata: Metadata) {
@@ -78,7 +79,7 @@ export class CodeGeneratorVisitor extends Visitor {
 
     visitBasicDesignator(node: BasicDesignatorNode): void {
         const name = node.getName().getName();
-        const symbol = this.symbols.getOrThrow(this.symbols.designatorToSymbol.get(node));
+        const symbol = getOrThrow(this.symbols.designatorToSymbol.get(node));
 
         if (symbol instanceof BuiltInTypeSymbol && symbol.scope === this.symbols.globalScope) {
             switch (name) {
@@ -245,7 +246,7 @@ export class CodeGeneratorVisitor extends Visitor {
         node.getParams().forEach((param) => {
             param.accept(this);
         });
-        this.handleCall(this.symbols.getOrThrow(this.symbols.callToSymbol.get(node)));
+        this.handleCall(getOrThrow(this.symbols.callToSymbol.get(node)));
     }
 
     visitAssignment(node: AssignmentNode): void {
@@ -256,7 +257,7 @@ export class CodeGeneratorVisitor extends Visitor {
 
     visitConstantList(node: ConstantListNode): void {
         node.getConstants().forEach((constant) => {
-            const symbol = this.symbols.getOrThrow(this.symbols.variableToSymbol.get(constant));
+            const symbol = getOrThrow(this.symbols.variableToSymbol.get(constant));
             const variable = this.metadata.findVariable(symbol);
             this.assembler.emit(OperatorCode.LoadVariable, variable);
             constant.getExpression().getExpression().accept(this);
@@ -301,7 +302,7 @@ export class CodeGeneratorVisitor extends Visitor {
             this.assembler.emit(OperatorCode.LoadThis);
         }
         from?.accept(this);
-        const message = this.metadata.findMessage(this.symbols.getOrThrow(this.symbols.sendReceiveToSymbol.get(node)));
+        const message = this.metadata.findMessage(getOrThrow(this.symbols.sendReceiveToSymbol.get(node)));
         this.assembler.emit(OperatorCode.Send, message);
     }
 
@@ -312,7 +313,7 @@ export class CodeGeneratorVisitor extends Visitor {
             this.assembler.emit(OperatorCode.LoadThis);
         }
         from?.accept(this);
-        const message = this.metadata.findMessage(this.symbols.getOrThrow(this.symbols.sendReceiveToSymbol.get(node)));
+        const message = this.metadata.findMessage(getOrThrow(this.symbols.sendReceiveToSymbol.get(node)));
         this.assembler.emit(OperatorCode.Receive, message);
     }
 
@@ -581,7 +582,7 @@ export class CodeGeneratorVisitor extends Visitor {
     }
 
     visitReceiveTest(node: ReceiveTestNode): void {
-        const message = this.symbols.getOrThrow(this.symbols.patternToSymbol.get(node.getPattern()));
+        const message = getOrThrow(this.symbols.patternToSymbol.get(node.getPattern()));
         // this should probably be handled in the runtime
         //const block = this.assembler.createLabel();
         //this.assembler.setLabel(block);
@@ -612,11 +613,11 @@ export class CodeGeneratorVisitor extends Visitor {
 
     visitFunctionCall(node: FunctionCallNode): void {
         node.getArguments().forEach((arg) => arg.accept(this));
-        this.handleCall(this.symbols.getOrThrow(this.symbols.callToSymbol.get(node)));
+        this.handleCall(getOrThrow(this.symbols.callToSymbol.get(node)));
     }
 
     visitProcedure(node: ProcedureNode): void {
-        const symbol = this.symbols.getOrThrow(this.symbols.procedureToSymbol.get(node));
+        const symbol = getOrThrow(this.symbols.procedureToSymbol.get(node));
         const visitor = new CodeGeneratorVisitor(this.symbols, symbol, this.metadata);
         node.getStatements()?.accept(visitor);
         const descriptor = this.metadata.findProcedure(symbol);
@@ -654,7 +655,7 @@ export class ComponentGeneratorVisitor extends Visitor {
             .forEach((declaration) => declaration.accept(visitor));
         descriptor.declarations.init.instructions.push(...visitor.getInstructions());
         node.getImplementations().forEach((declaration) => {
-            const implSymbol = this.symbols.getOrThrow(this.symbols.implementationToSymbol.get(declaration));
+            const implSymbol = getOrThrow(this.symbols.implementationToSymbol.get(declaration));
             const implVisitor = new ImplementationGeneratorVisitor(implSymbol, this.metadata, this.symbols);
             declaration.accept(implVisitor);
         });

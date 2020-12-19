@@ -1,3 +1,4 @@
+import { getOrThrow } from '@composita/ts-utility-types';
 import {
     Visitor,
     StatementSequenceNode,
@@ -119,7 +120,7 @@ export class FixStatementNodeVisitor extends Visitor {
     visitProcedureCall(node: ProcedureCallNode): void {
         const params = node.getParams().map((param) => {
             param.accept(new FixExpressionNodeVisitor(this.symbolTable, this.scope));
-            return this.symbolTable.getOrThrow(this.symbolTable.expressionToSymbol.get(param));
+            return getOrThrow(this.symbolTable.expressionToSymbol.get(param));
         });
         const procedure = CheckerHelper.getProcedure(
             node.getName().getName(),
@@ -133,7 +134,7 @@ export class FixStatementNodeVisitor extends Visitor {
 
     visitAssignment(node: AssignmentNode): void {
         node.getDesignator().accept(new FixExpressionNodeVisitor(this.symbolTable, this.scope));
-        const symbol = this.symbolTable.getOrThrow(this.symbolTable.designatorToSymbol.get(node.getDesignator()));
+        const symbol = getOrThrow(this.symbolTable.designatorToSymbol.get(node.getDesignator()));
         if (!(symbol instanceof VariableSymbol && symbol.mutable) && !(symbol instanceof CollectionVariableSymbol)) {
             throw new Error('Cannot asign to to a constant variable.');
         }
@@ -230,7 +231,7 @@ export class FixStatementNodeVisitor extends Visitor {
     visitRepeat(node: RepeatNode): void {
         const newScope = new BlockScopeSymbol(this.scope);
         node.getExpresssion().accept(new FixExpressionNodeVisitor(this.symbolTable, newScope));
-        node.getBody().accept(new FixExpressionNodeVisitor(this.symbolTable, newScope));
+        node.getBody().accept(new FixStatementNodeVisitor(this.symbolTable, newScope));
     }
 
     visitFor(node: ForNode): void {

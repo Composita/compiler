@@ -74,6 +74,7 @@ export class SymbolConstruction {
             // type conversion
             ['CHARACTER', [char_t, new Array<BuiltInTypeSymbol>(int_t)]],
             ['INTEGER', [int_t, new Array<BuiltInTypeSymbol>(real_t)]],
+            ['INTEGER', [int_t, new Array<BuiltInTypeSymbol>(char_t)]],
             ['REAL', [real_t, new Array<BuiltInTypeSymbol>(int_t)]],
             ['TEXT', [text_t, new Array<BuiltInTypeSymbol>(char_t)]],
         );

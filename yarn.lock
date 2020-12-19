@@ -23,17 +23,17 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@composita/il@^0.3.13":
-  version "0.3.13"
-  resolved "https://registry.yarnpkg.com/@composita/il/-/il-0.3.13.tgz#54dba7f8a3a6da40127005bf46ff1c31b829934d"
-  integrity sha512-zLgaliYURsWj6HJULihyC9caQ2D/iycpkbxwLbN7uWlviSgWXmy43pa0nL9KPKy0QOZN3ZyBQ9INDSL54fWa3g==
+"@composita/il@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@composita/il/-/il-0.4.0.tgz#fd29ea0aa3bf52ef3b3f668ed36b861543119f09"
+  integrity sha512-+3Y9TehaNgEt3Z/seULDL0HQGREUnBeGNtbFOx0P+oGhN6VeaBMQITVBMlQa8S3cusXA8k7kRu6cR5Cktl8hMw==
   dependencies:
-    "@composita/ts-utility-types" "^0.2.0"
+    "@composita/ts-utility-types" "^0.3.0"
 
-"@composita/ts-utility-types@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@composita/ts-utility-types/-/ts-utility-types-0.2.0.tgz#3d9e900e8b229c7921636ca424b11c4b03523241"
-  integrity sha512-HMwqhqRXJhIcidLkW7TK8zqjClW2nWdYncBer9Xn1JxMIpqMGr8Sq1LT47RIbS8n3O8zbwwhEeFTuu3R56jh1A==
+"@composita/ts-utility-types@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@composita/ts-utility-types/-/ts-utility-types-0.3.0.tgz#62b08502fb5a1b5e78258461d9693d852b691a33"
+  integrity sha512-JcTTb6IOtwcJOpdhDZ5tqX1VHEEpA+YigtNF4QSPFEG4Ef9MD0ro5bJ8DL2+Nw6/phNpxATMwcpRx46AqXrz2w==
 
 "@eslint/eslintrc@^0.2.2":
   version "0.2.2"

@@ -395,7 +395,6 @@ END HelloWorld2;`;
     test.end();
 });
 
-// DISABLED FOR NOW.
 tape('Generator Produced Consumer', (test) => {
     const code = `COMPONENT ProducerConsumer;
 	CONSTANT 
@@ -487,13 +486,10 @@ END ProducerConsumer;`;
     const lexer = new Lexer(diagnosis, uri, code);
     const parser = new Parser(diagnosis, lexer);
     const checker = new Checker();
-    // TODO enable once checker is fixed.
-    // there's an issue with symbol registration when using variables inside implementations
-    // from the outer component.
-    /*const symbols =*/ checker.check(uri, parser.parse());
-    //const generator = new Generator();
-    //const il = generator.generate(symbols);
-    //test.deepEqual(il, il, 'Two component IL compare');
+    const symbols = checker.check(uri, parser.parse());
+    const generator = new Generator();
+    const il = generator.generate(symbols);
+    test.deepEqual(il, il, 'Two component IL compare');
     test.end();
 });
 

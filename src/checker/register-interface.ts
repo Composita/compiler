@@ -1,3 +1,4 @@
+import { getFirstOrThrow } from '@composita/ts-utility-types';
 import { Visitor, InterfaceNode } from '../ast/ast';
 import { SymbolTable, ScopeSymbolType, InterfaceSymbol, SearchOptions } from '../symbols/symbols';
 
@@ -16,9 +17,7 @@ export class InterfaceRegisterVisitor extends Visitor {
         const name = node.getName().getName();
         const interfaceSymbol = new InterfaceSymbol(this.scope, name);
         try {
-            this.symbolTable.getFirstOrThrow(
-                this.symbolTable.findInterface(name, new SearchOptions(this.scope, false, false)),
-            );
+            getFirstOrThrow(this.symbolTable.findInterface(name, new SearchOptions(this.scope, false, false)));
             throw new Error(`Duplicate interface ${name} detected.`);
         } catch (error) {
             // all good

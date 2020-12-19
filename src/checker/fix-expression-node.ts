@@ -1,3 +1,4 @@
+import { getFirstOrThrow, getOrThrow } from '@composita/ts-utility-types';
 import {
     Visitor,
     ConstantExpressionNode,
@@ -52,11 +53,11 @@ export class FixExpressionNodeVisitor extends Visitor {
 
     private getType(node: ExpressionNode): TypeSymbol {
         const symbol = this.symbolTable.expressionToSymbol.get(node);
-        return this.symbolTable.getOrThrow(symbol);
+        return getOrThrow(symbol);
     }
 
     private getBuiltIn(typeName: string): TypeSymbol {
-        return this.symbolTable.getFirstOrThrow(this.symbolTable.findBuiltIn(typeName));
+        return getFirstOrThrow(this.symbolTable.findBuiltIn(typeName));
     }
 
     private visitAttributes(attributes: Array<AttributeNode>): void {
@@ -242,15 +243,7 @@ export class FixExpressionNodeVisitor extends Visitor {
     visitMessageTest(node: ReceiveTestNode | InputTestNode): void {
         this.symbolTable.expressionToSymbol.set(node, this.getBuiltIn('BOOLEAN'));
         node.getDesignator()?.accept(this);
-        const designator = node.getDesignator();
-        const target =
-            designator !== undefined
-                ? this.symbolTable.getOrThrow(this.symbolTable.designatorToSymbol.get(designator))
-                : undefined;
         const pattern = node.getPattern();
-        if (target?.identifier === 'task') {
-            console.log(node);
-        }
         const message = CheckerHelper.getMessage(
             this.symbolTable,
             this.scope,
@@ -278,7 +271,7 @@ export class FixExpressionNodeVisitor extends Visitor {
     visitFunctionCall(node: FunctionCallNode): void {
         node.getArguments().forEach((expression) => expression.accept(this));
         const params = node.getArguments().map((expression) => this.getType(expression));
-        const procedure = this.symbolTable.getFirstOrThrow(
+        const procedure = getFirstOrThrow(
             this.symbolTable.findProcedure(
                 node.getName().getName(),
                 params,
@@ -300,7 +293,7 @@ export class FixExpressionNodeVisitor extends Visitor {
             throw new Error(`${name} is not a procedure parameter.`);
         }
 
-        const symbol = this.symbolTable.getFirstOrThrow(
+        const symbol = getFirstOrThrow(
             this.symbolTable.findVariable(name, new SearchOptions(localScope, false, false)),
         );
         if (!(symbol.scope instanceof ProcedureSymbol)) {
@@ -324,7 +317,7 @@ export class FixExpressionNodeVisitor extends Visitor {
             // let's try something else
         }
         try {
-            const constant = this.symbolTable.getFirstOrThrow(
+            const constant = getFirstOrThrow(
                 this.symbolTable.constants.filter((constant) => constant.identifier === name),
             );
             this.symbolTable.expressionToSymbol.set(node, constant.type);
@@ -334,7 +327,7 @@ export class FixExpressionNodeVisitor extends Visitor {
             // let's try somethign else...
         }
         try {
-            const symbol = this.symbolTable.getFirstOrThrow(
+            const symbol = getFirstOrThrow(
                 this.symbolTable.findInterface(name, new SearchOptions(this.scope, true, true)),
             );
             this.symbolTable.expressionToSymbol.set(node, symbol);
@@ -344,7 +337,7 @@ export class FixExpressionNodeVisitor extends Visitor {
             // it must be something different...
         }
         try {
-            const symbol = this.symbolTable.getFirstOrThrow(
+            const symbol = getFirstOrThrow(
                 this.symbolTable.findComponent(name, new SearchOptions(this.scope, true, true)),
             );
             this.symbolTable.expressionToSymbol.set(node, symbol);
@@ -354,7 +347,7 @@ export class FixExpressionNodeVisitor extends Visitor {
             // give it another go...
         }
         try {
-            const symbol = this.symbolTable.getFirstOrThrow(
+            const symbol = getFirstOrThrow(
                 this.symbolTable.findCollectionVariable(name, true, [], new SearchOptions(this.scope, true, false)),
             );
             this.symbolTable.expressionToSymbol.set(node, symbol.type);
@@ -377,7 +370,7 @@ export class FixExpressionNodeVisitor extends Visitor {
     visitBasicExpressionDesignator(node: BasicExpressionDesignatorNode): void {
         const name = node.getName().getName();
         try {
-            const variable = this.symbolTable.getFirstOrThrow(
+            const variable = getFirstOrThrow(
                 this.symbolTable.findCollectionVariable(
                     name,
                     true,
@@ -392,7 +385,7 @@ export class FixExpressionNodeVisitor extends Visitor {
             // one more try...
         }
         try {
-            const interfaceSymbol = this.symbolTable.getFirstOrThrow(
+            const interfaceSymbol = getFirstOrThrow(
                 this.symbolTable.findInterface(name, new SearchOptions(this.scope, true, true)),
             );
             this.symbolTable.expressionToSymbol.set(node, interfaceSymbol);

@@ -152,23 +152,6 @@ export class SymbolTable {
         this.collectionVariables.push(variable);
     }
 
-    getOrThrow<T>(item: Optional<T>): T {
-        if (item === undefined) {
-            throw new Error('Item was undefined.');
-        }
-        return item;
-    }
-
-    getFirstOrThrow<T>(data: Array<T>): T {
-        if (data.length < 1) {
-            throw Error('Data containted no element.');
-        }
-        if (data.length > 1) {
-            throw Error('Data contained more than one element.');
-        }
-        return data[0];
-    }
-
     static componentSatisfiesGeneric(component: ComponentSymbol, generic: GenericSymbol): boolean {
         if (generic.offered.length === 0 && generic.required.length === 0) {
             return true;

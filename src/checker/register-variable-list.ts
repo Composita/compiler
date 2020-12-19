@@ -1,3 +1,4 @@
+import { getFirstOrThrow } from '@composita/ts-utility-types';
 import { Visitor, VariableListNode, VariableNode } from '../ast/ast';
 import {
     SymbolTable,
@@ -29,9 +30,7 @@ export class VariableListRegisterVisitor extends Visitor {
                         this.scope,
                         identifier,
                         type,
-                        new Array<TypeSymbol>(
-                            this.symbolTable.getFirstOrThrow(this.symbolTable.findBuiltIn('INTEGER')),
-                        ),
+                        new Array<TypeSymbol>(getFirstOrThrow(this.symbolTable.findBuiltIn('INTEGER'))),
                     ),
                 );
                 // TODO fix variable here as well.
