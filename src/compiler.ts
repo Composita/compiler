@@ -8,7 +8,7 @@ import { Checker } from './checker/checker';
 import { Generator } from './generator/generator';
 
 export class Compiler {
-    async compile(uri: string, code: string): Promise<IL> {
+    compile(uri: string, code: string): IL {
         const diagnosis: Diagnosis = new CompilerDiagnosis();
         const lexer: Lexer = new Lexer(diagnosis, uri, code);
         const parser: Parser = new Parser(diagnosis, lexer);
