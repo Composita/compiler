@@ -1,6 +1,6 @@
 {
   "name": "@composita/compiler",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Composita language compiler.",
   "main": "dist/cjs/compiler.js",
   "module": "dist/esm/compiler.js",
