@@ -398,7 +398,7 @@ export class CodeGeneratorVisitor extends Visitor {
         this.assembler.setLabel(repeatStart);
         node.getBody().accept(this);
         node.getExpresssion().accept(this);
-        this.assembler.emitBranchFalse(repeatEnd);
+        this.assembler.emitBranchTrue(repeatEnd);
         this.assembler.emitBranch(repeatStart);
         this.assembler.setLabel(repeatEnd);
     }
