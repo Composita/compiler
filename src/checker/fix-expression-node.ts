@@ -1,4 +1,5 @@
 import { getFirstOrThrow, getOrThrow } from '@composita/ts-utility-types';
+import { type } from 'os';
 import {
     Visitor,
     ConstantExpressionNode,
@@ -370,15 +371,23 @@ export class FixExpressionNodeVisitor extends Visitor {
     visitBasicExpressionDesignator(node: BasicExpressionDesignatorNode): void {
         const name = node.getName().getName();
         try {
-            const variable = getFirstOrThrow(
-                this.symbolTable.findCollectionVariable(
-                    name,
-                    true,
-                    new Array<TypeSymbol>(),
-                    new SearchOptions(this.scope, false, true),
-                ),
+            node.getExpressions().forEach((expr) =>
+                expr.accept(new FixExpressionNodeVisitor(this.symbolTable, this.scope)),
             );
-            this.symbolTable.expressionToSymbol.set(node, variable.type);
+            const types = node
+                .getExpressions()
+                .map((expr) => getOrThrow(this.symbolTable.expressionToSymbol.get(expr)));
+            const variable = getFirstOrThrow(
+                this.symbolTable.findCollectionVariable(name, false, types, new SearchOptions(this.scope, false, true)),
+            );
+            if (type instanceof BuiltInTypeSymbol && type.identifier === 'TEXT') {
+                this.symbolTable.expressionToSymbol.set(
+                    node,
+                    getFirstOrThrow(this.symbolTable.findBuiltIn('CHARACTER')),
+                );
+            } else {
+                this.symbolTable.expressionToSymbol.set(node, variable.type);
+            }
             this.symbolTable.designatorToSymbol.set(node, variable);
             return;
         } catch (error) {

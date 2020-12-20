@@ -49,6 +49,7 @@ import {
     ExistsTestNode,
     ConstantListNode,
     VariableListNode,
+    BasicExpressionDesignatorNode,
 } from '../ast/ast';
 import { Instruction, OperationCode, SystemCallOperation } from '@composita/il';
 import {
@@ -109,6 +110,20 @@ export class CodeGeneratorVisitor extends Visitor {
         }
 
         throw Error(`Unsupported BasicDesignatorNode ${name}`);
+    }
+
+    visitBasicExpressionDesignator(node: BasicExpressionDesignatorNode): void {
+        const name = node.getName().getName();
+        const symbol = getOrThrow(this.symbols.designatorToSymbol.get(node));
+
+        if (symbol instanceof CollectionVariableSymbol) {
+            const variable = this.metadata.findVariable(symbol);
+            node.getExpressions().forEach((expr) => expr.accept(this));
+            this.assembler.emit(OperationCode.LoadVariable, variable);
+            return;
+        }
+
+        throw Error(`Unsupported BasicExpressionDesignatorNode ${name}`);
     }
 
     visitBaseTargetDesignator(node: BaseTargetDesignatorNode): void {
@@ -333,8 +348,10 @@ export class CodeGeneratorVisitor extends Visitor {
         const startAwait = this.assembler.createLabel();
         const endAwait = this.assembler.createLabel();
         this.assembler.setLabel(startAwait);
+        this.assembler.emit(OperationCode.AcquireExclusive);
         node.getExpression().accept(this);
-        this.assembler.emitBranchFalse(endAwait);
+        this.assembler.emitBranchTrue(endAwait);
+        this.assembler.emit(OperationCode.ReleaseExclusive);
         this.assembler.emitBranch(startAwait);
         this.assembler.setLabel(endAwait);
     }

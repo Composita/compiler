@@ -22,9 +22,12 @@ export class VariableListRegisterVisitor extends Visitor {
         if (type === undefined) {
             throw new Error(`${node.getNames()[0].getName()}: Unknown type.`);
         }
+        // ignored for now as usage is unclear
+        //const isMarkedArray = node.getAttributes().find((attr) => attr.getName().getName() === 'ARRAY');
         node.getNames().forEach((name) => {
             const identifier = name.getName();
-            if (type instanceof BuiltInTypeSymbol && type.identifier === 'TEXT') {
+            const hasParams = name.getParams().length;
+            if (type instanceof BuiltInTypeSymbol && type.identifier === 'TEXT' /* || (isMarkedArray && !hasParams)*/) {
                 this.symbolTable.registerCollectionVariable(
                     new CollectionVariableSymbol(
                         this.scope,
@@ -33,10 +36,9 @@ export class VariableListRegisterVisitor extends Visitor {
                         new Array<TypeSymbol>(getFirstOrThrow(this.symbolTable.findBuiltIn('INTEGER'))),
                     ),
                 );
-                // TODO fix variable here as well.
                 return;
             }
-            if (name.getParams().length === 0) {
+            if (!hasParams) {
                 const variable = new VariableSymbol(this.scope, identifier, true, type);
                 this.symbolTable.registerVariable(variable);
                 this.symbolTable.variableToSymbol.set(node, variable);
