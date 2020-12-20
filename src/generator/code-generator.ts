@@ -539,7 +539,7 @@ export class CodeGeneratorVisitor extends Visitor {
         node.getRight().accept(this);
         switch (node.getOp()) {
             case InfixFactorOperator.AndText:
-                this.assembler.emit(OperatorCode.Add);
+                this.assembler.emit(OperatorCode.LogicAnd);
                 break;
             case InfixFactorOperator.Div:
             case InfixFactorOperator.DivText:
