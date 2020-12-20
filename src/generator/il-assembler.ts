@@ -6,9 +6,9 @@ import {
     InstructionArgument,
     IntegerDescriptor,
     JumpDescriptor,
-    OperatorCode,
+    OperationCode,
     SystemCallDescriptor,
-    SystemCallOperator,
+    SystemCallOperation,
     TextDescriptor,
 } from '@composita/il';
 
@@ -46,9 +46,9 @@ export class ILAssembler {
             origins.forEach((origin) => {
                 const instruction = this.code[origin - 1];
                 if (
-                    instruction.code !== OperatorCode.Branch &&
-                    instruction.code !== OperatorCode.BranchFalse &&
-                    instruction.code !== OperatorCode.BranchTrue
+                    instruction.code !== OperationCode.Branch &&
+                    instruction.code !== OperationCode.BranchFalse &&
+                    instruction.code !== OperationCode.BranchTrue
                 ) {
                     throw new Error(
                         'Not a jump instruction: ' + instruction.code + ', target: ' + target + ', origin: ' + origin,
@@ -60,26 +60,26 @@ export class ILAssembler {
     }
 
     emitLoadInteger(n: number): void {
-        this.emit(OperatorCode.LoadConstantInteger, new IntegerDescriptor(n));
+        this.emit(OperationCode.LoadConstantInteger, new IntegerDescriptor(n));
     }
 
     emitLoadFloat(n: number): void {
-        this.emit(OperatorCode.LoadConstantFloat, new FloatDescriptor(n));
+        this.emit(OperationCode.LoadConstantFloat, new FloatDescriptor(n));
     }
 
     emitLoadCharacter(n: string): void {
-        this.emit(OperatorCode.LoadConstantCharacter, new CharacterDescriptor(n));
+        this.emit(OperationCode.LoadConstantCharacter, new CharacterDescriptor(n));
     }
 
     emitLoadText(n: string): void {
-        this.emit(OperatorCode.LoadConstantText, new TextDescriptor(n));
+        this.emit(OperationCode.LoadConstantText, new TextDescriptor(n));
     }
 
     emitLoadBoolean(n: boolean): void {
-        this.emit(OperatorCode.LoadConstantBoolean, new BooleanDescriptor(n));
+        this.emit(OperationCode.LoadConstantBoolean, new BooleanDescriptor(n));
     }
 
-    private emitJump(opCode: OperatorCode, label: Label): void {
+    private emitJump(opCode: OperationCode, label: Label): void {
         this.emit(opCode);
         if (!this.origins.has(label)) {
             this.origins.set(label, new Array<number>());
@@ -88,24 +88,24 @@ export class ILAssembler {
     }
 
     emitBranch(label: Label): void {
-        this.emitJump(OperatorCode.Branch, label);
+        this.emitJump(OperationCode.Branch, label);
     }
 
     emitBranchFalse(label: Label): void {
-        this.emitJump(OperatorCode.BranchFalse, label);
+        this.emitJump(OperationCode.BranchFalse, label);
     }
 
     emitBranchTrue(label: Label): void {
-        this.emitJump(OperatorCode.BranchTrue, label);
+        this.emitJump(OperationCode.BranchTrue, label);
     }
 
-    emitSystemCall(sysCall: SystemCallOperator, numberOfArguments: number): void {
+    emitSystemCall(sysCall: SystemCallOperation, numberOfArguments: number): void {
         const descriptor = new SystemCallDescriptor(sysCall);
         descriptor.arguments.push(new IntegerDescriptor(numberOfArguments));
-        this.emit(OperatorCode.SystemCall, descriptor);
+        this.emit(OperationCode.SystemCall, descriptor);
     }
 
-    emit(opCode: OperatorCode, ...args: Array<InstructionArgument>): void {
+    emit(opCode: OperationCode, ...args: Array<InstructionArgument>): void {
         this.code.push(new Instruction(opCode, ...args));
     }
 }

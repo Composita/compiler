@@ -50,7 +50,7 @@ import {
     ConstantListNode,
     VariableListNode,
 } from '../ast/ast';
-import { Instruction, OperatorCode, SystemCallOperator } from '@composita/il';
+import { Instruction, OperationCode, SystemCallOperation } from '@composita/il';
 import {
     SymbolTable,
     ScopeSymbolType,
@@ -98,13 +98,13 @@ export class CodeGeneratorVisitor extends Visitor {
 
         if (symbol instanceof VariableSymbol || symbol instanceof CollectionVariableSymbol) {
             const variable = this.metadata.findVariable(symbol);
-            this.assembler.emit(OperatorCode.LoadVariable, variable);
+            this.assembler.emit(OperationCode.LoadVariable, variable);
             return;
         }
 
         if (symbol instanceof InterfaceSymbol) {
             const interfaceDescriptor = this.metadata.findInterface(symbol);
-            this.assembler.emit(OperatorCode.LoadService, interfaceDescriptor);
+            this.assembler.emit(OperationCode.LoadService, interfaceDescriptor);
             return;
         }
 
@@ -128,10 +128,10 @@ export class CodeGeneratorVisitor extends Visitor {
     visitAttribute(node: AttributeNode): void {
         switch (node.getName().getName()) {
             case 'SHARED':
-                this.assembler.emit(OperatorCode.AcquireShared);
+                this.assembler.emit(OperationCode.AcquireShared);
                 break;
             case 'EXCLUSIVE':
-                this.assembler.emit(OperatorCode.AcquireExclusive);
+                this.assembler.emit(OperationCode.AcquireExclusive);
                 break;
         }
     }
@@ -139,10 +139,10 @@ export class CodeGeneratorVisitor extends Visitor {
     handleLockRelease(node: AttributeNode): void {
         switch (node.getName().getName()) {
             case 'SHARED':
-                this.assembler.emit(OperatorCode.ReleaseShared);
+                this.assembler.emit(OperationCode.ReleaseShared);
                 break;
             case 'EXCLUSIVE':
-                this.assembler.emit(OperatorCode.ReleaseExclusive);
+                this.assembler.emit(OperationCode.ReleaseExclusive);
                 break;
         }
     }
@@ -161,76 +161,76 @@ export class CodeGeneratorVisitor extends Visitor {
         }
         switch (name) {
             case 'WRITELINE':
-                this.assembler.emitSystemCall(SystemCallOperator.WriteLine, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.WriteLine, numberOfParams);
                 return true;
             case 'ASSERT':
-                this.assembler.emitSystemCall(SystemCallOperator.Assert, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Assert, numberOfParams);
                 return true;
             case 'HALT':
-                this.assembler.emitSystemCall(SystemCallOperator.Halt, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Halt, numberOfParams);
                 return true;
             case 'INC':
-                this.assembler.emitSystemCall(SystemCallOperator.Inc, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Inc, numberOfParams);
                 return true;
             case 'DEC':
-                this.assembler.emitSystemCall(SystemCallOperator.Dec, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Dec, numberOfParams);
                 return true;
             case 'PASSIVATE':
-                this.assembler.emitSystemCall(SystemCallOperator.Passivate, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Passivate, numberOfParams);
                 return true;
             case 'WRITE':
-                this.assembler.emitSystemCall(SystemCallOperator.Write, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Write, numberOfParams);
                 return true;
             case 'WRITEHEX':
-                this.assembler.emitSystemCall(SystemCallOperator.WriteHex, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.WriteHex, numberOfParams);
                 return true;
             case 'COUNT':
-                this.assembler.emitSystemCall(SystemCallOperator.Count, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Count, numberOfParams);
                 return true;
             case 'LENGTH':
-                this.assembler.emitSystemCall(SystemCallOperator.Length, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Length, numberOfParams);
                 return true;
             case 'SQRT':
-                this.assembler.emitSystemCall(SystemCallOperator.Sqrt, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Sqrt, numberOfParams);
                 return true;
             case 'SIN':
-                this.assembler.emitSystemCall(SystemCallOperator.Sin, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Sin, numberOfParams);
                 return true;
             case 'COS':
-                this.assembler.emitSystemCall(SystemCallOperator.Cos, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Cos, numberOfParams);
                 return true;
             case 'TAN':
-                this.assembler.emitSystemCall(SystemCallOperator.Tan, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Tan, numberOfParams);
                 return true;
             case 'ARCSIN':
-                this.assembler.emitSystemCall(SystemCallOperator.ArcSin, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.ArcSin, numberOfParams);
                 return true;
             case 'ARCCOS':
-                this.assembler.emitSystemCall(SystemCallOperator.ArcCos, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.ArcCos, numberOfParams);
                 return true;
             case 'ARCTAN':
-                this.assembler.emitSystemCall(SystemCallOperator.ArcTan, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.ArcTan, numberOfParams);
                 return true;
             case 'MIN':
-                this.assembler.emitSystemCall(SystemCallOperator.Min, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Min, numberOfParams);
                 return true;
             case 'MAX':
-                this.assembler.emitSystemCall(SystemCallOperator.Max, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Max, numberOfParams);
                 return true;
             case 'CHARACTER':
-                this.assembler.emitSystemCall(SystemCallOperator.ToCharacter, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.ToCharacter, numberOfParams);
                 return true;
             case 'INTEGER':
-                this.assembler.emitSystemCall(SystemCallOperator.ToInteger, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.ToInteger, numberOfParams);
                 return true;
             case 'REAL':
-                this.assembler.emitSystemCall(SystemCallOperator.ToReal, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.ToReal, numberOfParams);
                 return true;
             case 'TEXT':
-                this.assembler.emitSystemCall(SystemCallOperator.ToText, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.ToText, numberOfParams);
                 return true;
             case 'RANDOM':
-                this.assembler.emitSystemCall(SystemCallOperator.Random, numberOfParams);
+                this.assembler.emitSystemCall(SystemCallOperation.Random, numberOfParams);
                 return true;
         }
         return false;
@@ -240,7 +240,7 @@ export class CodeGeneratorVisitor extends Visitor {
         if (this.handleSystemCall(procedure)) {
             return;
         }
-        this.assembler.emit(OperatorCode.ProcedureCall, this.metadata.findProcedure(procedure));
+        this.assembler.emit(OperationCode.ProcedureCall, this.metadata.findProcedure(procedure));
     }
 
     visitProcedureCall(node: ProcedureCallNode): void {
@@ -253,16 +253,16 @@ export class CodeGeneratorVisitor extends Visitor {
     visitAssignment(node: AssignmentNode): void {
         node.getDesignator().accept(this);
         node.getExpression().accept(this);
-        this.assembler.emit(OperatorCode.StoreVariable);
+        this.assembler.emit(OperationCode.StoreVariable);
     }
 
     visitConstantList(node: ConstantListNode): void {
         node.getConstants().forEach((constant) => {
             const symbol = getOrThrow(this.symbols.variableToSymbol.get(constant));
             const variable = this.metadata.findVariable(symbol);
-            this.assembler.emit(OperatorCode.LoadVariable, variable);
+            this.assembler.emit(OperationCode.LoadVariable, variable);
             constant.getExpression().getExpression().accept(this);
-            this.assembler.emit(OperatorCode.StoreVariable);
+            this.assembler.emit(OperationCode.StoreVariable);
         });
     }
 
@@ -274,11 +274,11 @@ export class CodeGeneratorVisitor extends Visitor {
         if (designator instanceof VariableSymbol || designator instanceof CollectionVariableSymbol) {
             const type = designator.type;
             if (type instanceof ComponentSymbol) {
-                this.assembler.emit(OperatorCode.New, this.metadata.findComponent(type));
+                this.assembler.emit(OperationCode.New, this.metadata.findComponent(type));
                 return;
             }
             if (type instanceof BuiltInTypeSymbol) {
-                this.assembler.emit(OperatorCode.New, this.metadata.builtInTypeDescriptor(type));
+                this.assembler.emit(OperationCode.New, this.metadata.builtInTypeDescriptor(type));
                 return;
             }
         }
@@ -288,45 +288,45 @@ export class CodeGeneratorVisitor extends Visitor {
     visitConnect(node: ConnectNode): void {
         node.getWhat().accept(this);
         node.getTo().accept(this);
-        this.assembler.emit(OperatorCode.Connect);
+        this.assembler.emit(OperationCode.Connect);
     }
 
     visitDisconnect(node: DisconnectNode): void {
         node.getWhat().accept(this);
-        this.assembler.emit(OperatorCode.Disconnect);
+        this.assembler.emit(OperationCode.Disconnect);
     }
 
     visitSend(node: SendNode): void {
         node.getArgs().forEach((arg) => arg.accept(this));
         const from = node.getFrom();
         if (from === undefined || from instanceof BasicDesignatorNode) {
-            this.assembler.emit(OperatorCode.LoadThis);
+            this.assembler.emit(OperationCode.LoadThis);
         }
         from?.accept(this);
         const message = this.metadata.findMessage(getOrThrow(this.symbols.sendReceiveToSymbol.get(node)));
-        this.assembler.emit(OperatorCode.Send, message);
+        this.assembler.emit(OperationCode.Send, message);
     }
 
     visitReceive(node: ReceiveNode): void {
         node.getTargets().forEach((arg) => arg.accept(this));
         const from = node.getFrom();
         if (from === undefined || from instanceof BasicDesignatorNode) {
-            this.assembler.emit(OperatorCode.LoadThis);
+            this.assembler.emit(OperationCode.LoadThis);
         }
         from?.accept(this);
         const message = this.metadata.findMessage(getOrThrow(this.symbols.sendReceiveToSymbol.get(node)));
-        this.assembler.emit(OperatorCode.Receive, message);
+        this.assembler.emit(OperationCode.Receive, message);
     }
 
     visitDelete(node: DeleteNode): void {
         node.getTarget().accept(this);
-        this.assembler.emit(OperatorCode.Delete);
+        this.assembler.emit(OperationCode.Delete);
     }
 
     visitMove(node: MoveNode): void {
         node.getFrom().accept(this);
         node.getTo().accept(this);
-        this.assembler.emit(OperatorCode.Move);
+        this.assembler.emit(OperationCode.Move);
     }
 
     visitAwait(node: AwaitNode): void {
@@ -341,7 +341,7 @@ export class CodeGeneratorVisitor extends Visitor {
 
     visitReturn(node: ReturnNode): void {
         node.getExpression()?.accept(this);
-        this.assembler.emit(OperatorCode.Return);
+        this.assembler.emit(OperationCode.Return);
     }
 
     visitIf(node: IfNode): void {
@@ -409,7 +409,7 @@ export class CodeGeneratorVisitor extends Visitor {
         const designator = node.getDesignator();
         designator.accept(this);
         node.getExpression().accept(this);
-        this.assembler.emit(OperatorCode.StoreVariable);
+        this.assembler.emit(OperationCode.StoreVariable);
         this.assembler.setLabel(conditionLabel);
         designator.accept(this);
         node.getTo().accept(this);
@@ -420,25 +420,25 @@ export class CodeGeneratorVisitor extends Visitor {
             const constExpr = increment.getExpression();
             constExpr.accept(this);
             this.assembler.emitLoadInteger(0);
-            this.assembler.emit(OperatorCode.Greater); // is BY > 0
+            this.assembler.emit(OperationCode.Greater); // is BY > 0
             this.assembler.emitBranchFalse(decrement);
-            this.assembler.emit(OperatorCode.LessEqual);
+            this.assembler.emit(OperationCode.LessEqual);
             this.assembler.emitBranchFalse(forEnd);
             this.assembler.emitBranch(body);
             this.assembler.setLabel(decrement);
-            this.assembler.emit(OperatorCode.GreaterEqual);
+            this.assembler.emit(OperationCode.GreaterEqual);
             this.assembler.emitBranchFalse(forEnd);
             this.assembler.setLabel(body);
             node.getStatements().accept(this);
             designator.accept(this);
             constExpr.accept(this);
-            this.assembler.emitSystemCall(SystemCallOperator.Inc, 2);
+            this.assembler.emitSystemCall(SystemCallOperation.Inc, 2);
         } else {
-            this.assembler.emit(OperatorCode.LessEqual);
+            this.assembler.emit(OperationCode.LessEqual);
             this.assembler.emitBranchFalse(forEnd);
             node.getStatements().accept(this);
             designator.accept(this);
-            this.assembler.emitSystemCall(SystemCallOperator.Inc, 1);
+            this.assembler.emitSystemCall(SystemCallOperation.Inc, 1);
         }
         this.assembler.emitBranch(conditionLabel);
         this.assembler.setLabel(forEnd);
@@ -451,7 +451,7 @@ export class CodeGeneratorVisitor extends Visitor {
         this.assembler.setLabel(conditionLabel);
         node.getDesignators().forEach((designator) => designator.accept(this));
         node.getOf().accept(this);
-        this.assembler.emitSystemCall(SystemCallOperator.LoadForEachDesignators, node.getDesignators().length);
+        this.assembler.emitSystemCall(SystemCallOperation.LoadForEachDesignators, node.getDesignators().length);
         this.assembler.emitBranchFalse(forEnd);
         node.getBody().accept(this);
         this.assembler.emitBranch(conditionLabel);
@@ -472,22 +472,22 @@ export class CodeGeneratorVisitor extends Visitor {
         node.getRight().accept(this);
         switch (node.getOp()) {
             case LogicalOperator.Equal:
-                this.assembler.emit(OperatorCode.Equal);
+                this.assembler.emit(OperationCode.Equal);
                 break;
             case LogicalOperator.Less:
-                this.assembler.emit(OperatorCode.Less);
+                this.assembler.emit(OperationCode.Less);
                 break;
             case LogicalOperator.LessEqual:
-                this.assembler.emit(OperatorCode.LessEqual);
+                this.assembler.emit(OperationCode.LessEqual);
                 break;
             case LogicalOperator.More:
-                this.assembler.emit(OperatorCode.Greater);
+                this.assembler.emit(OperationCode.Greater);
                 break;
             case LogicalOperator.MoreEqual:
-                this.assembler.emit(OperatorCode.GreaterEqual);
+                this.assembler.emit(OperationCode.GreaterEqual);
                 break;
             case LogicalOperator.NotEqual:
-                this.assembler.emit(OperatorCode.NotEqual);
+                this.assembler.emit(OperationCode.NotEqual);
                 break;
         }
     }
@@ -499,14 +499,14 @@ export class CodeGeneratorVisitor extends Visitor {
     visitTypeCheck(node: TypeCheckExpressionNode): void {
         node.getDesignator().accept(this);
         node.getType().accept(this);
-        this.assembler.emit(OperatorCode.IsType);
+        this.assembler.emit(OperationCode.IsType);
     }
 
     visitUnaryTermNode(node: UnaryTermNode): void {
         node.getTerm().accept(this);
         switch (node.getOp()) {
             case PrefixOperator.Minus:
-                this.assembler.emit(OperatorCode.Negate);
+                this.assembler.emit(OperationCode.Negate);
         }
     }
 
@@ -519,13 +519,13 @@ export class CodeGeneratorVisitor extends Visitor {
         node.getRight().accept(this);
         switch (node.getOp()) {
             case InfixTermOperator.Minus:
-                this.assembler.emit(OperatorCode.Subtract);
+                this.assembler.emit(OperationCode.Subtract);
                 break;
             case InfixTermOperator.Or:
-                this.assembler.emit(OperatorCode.LogicOr);
+                this.assembler.emit(OperationCode.LogicOr);
                 break;
             case InfixTermOperator.Plus:
-                this.assembler.emit(OperatorCode.Add);
+                this.assembler.emit(OperationCode.Add);
                 break;
         }
     }
@@ -539,17 +539,17 @@ export class CodeGeneratorVisitor extends Visitor {
         node.getRight().accept(this);
         switch (node.getOp()) {
             case InfixFactorOperator.AndText:
-                this.assembler.emit(OperatorCode.LogicAnd);
+                this.assembler.emit(OperationCode.LogicAnd);
                 break;
             case InfixFactorOperator.Div:
             case InfixFactorOperator.DivText:
-                this.assembler.emit(OperatorCode.Divide);
+                this.assembler.emit(OperationCode.Divide);
                 break;
             case InfixFactorOperator.Times:
-                this.assembler.emit(OperatorCode.Multiply);
+                this.assembler.emit(OperationCode.Multiply);
                 break;
             case InfixFactorOperator.ModText:
-                this.assembler.emit(OperatorCode.Modulo);
+                this.assembler.emit(OperationCode.Modulo);
                 break;
         }
     }
@@ -558,7 +558,7 @@ export class CodeGeneratorVisitor extends Visitor {
         node.getFactor().accept(this);
         switch (node.getPrefix()) {
             case FactorPrefix.Not:
-                this.assembler.emit(OperatorCode.Not);
+                this.assembler.emit(OperationCode.Not);
         }
     }
 
@@ -588,22 +588,22 @@ export class CodeGeneratorVisitor extends Visitor {
         //const block = this.assembler.createLabel();
         //this.assembler.setLabel(block);
         const designator = node.getDesignator();
-        this.assembler.emit(OperatorCode.LoadThis);
+        this.assembler.emit(OperationCode.LoadThis);
         designator?.accept(this);
-        this.assembler.emit(OperatorCode.ReceiveTest, this.metadata.findMessage(message));
+        this.assembler.emit(OperationCode.ReceiveTest, this.metadata.findMessage(message));
         //this.assembler.emitBranchFalse(block);
     }
 
     visitInputTest(node: InputTestNode): void {
         const designator = node.getDesignator();
-        this.assembler.emit(OperatorCode.LoadThis);
+        this.assembler.emit(OperationCode.LoadThis);
         designator?.accept(this);
-        this.assembler.emit(OperatorCode.InputTest);
+        this.assembler.emit(OperationCode.InputTest);
     }
 
     visitExistsTest(node: ExistsTestNode): void {
         node.getDesignator().accept(this);
-        this.assembler.emit(OperatorCode.ExistsTest);
+        this.assembler.emit(OperationCode.ExistsTest);
     }
 
     visitFunctionCall(node: FunctionCallNode): void {

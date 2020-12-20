@@ -3,12 +3,12 @@ import {
     IL,
     ComponentDescriptor,
     Instruction,
-    OperatorCode,
+    OperationCode,
     VariableDescriptor,
     TextDescriptor,
     SystemCallDescriptor,
     IntegerDescriptor,
-    SystemCallOperator,
+    SystemCallOperation,
     BooleanDescriptor,
     JumpDescriptor,
     FloatDescriptor,
@@ -33,14 +33,14 @@ END HelloWorld;`;
     const expectedIL = new IL();
     const entry = new ComponentDescriptor('HelloWorld');
     entry.begin.instructions.push(
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Hello World')),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Hello World')),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
         ),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.WriteLine, new IntegerDescriptor(0)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.WriteLine, new IntegerDescriptor(0)),
         ),
     );
     expectedIL.components.push(entry);
@@ -67,15 +67,15 @@ END Expr;`;
     const entry = new ComponentDescriptor('Expr');
     const variableV = new VariableDescriptor('v', new IntegerDescriptor(), true);
     entry.begin.instructions.push(
-        new Instruction(OperatorCode.LoadVariable, variableV),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(5)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(3)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(7)),
-        new Instruction(OperatorCode.Multiply),
-        new Instruction(OperatorCode.Subtract),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(8)),
-        new Instruction(OperatorCode.Add),
-        new Instruction(OperatorCode.StoreVariable),
+        new Instruction(OperationCode.LoadVariable, variableV),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(5)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(3)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(7)),
+        new Instruction(OperationCode.Multiply),
+        new Instruction(OperationCode.Subtract),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(8)),
+        new Instruction(OperationCode.Add),
+        new Instruction(OperationCode.StoreVariable),
     );
     entry.declarations.variables.push(variableV);
     expectedIL.components.push(entry);
@@ -104,32 +104,32 @@ END Expr;`;
     const entry = new ComponentDescriptor('Expr');
     const variableV = new VariableDescriptor('v', new IntegerDescriptor(), true);
     entry.begin.instructions.push(
-        new Instruction(OperatorCode.LoadVariable, variableV),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(1)),
-        new Instruction(OperatorCode.StoreVariable),
-        new Instruction(OperatorCode.LoadVariable, variableV),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(10)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(3)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(0)),
-        new Instruction(OperatorCode.Greater),
-        new Instruction(OperatorCode.BranchFalse, new JumpDescriptor(3)), // dec
-        new Instruction(OperatorCode.LessEqual),
-        new Instruction(OperatorCode.BranchFalse, new JumpDescriptor(9)), // end
-        new Instruction(OperatorCode.Branch, new JumpDescriptor(2)), // body
-        new Instruction(OperatorCode.GreaterEqual),
-        new Instruction(OperatorCode.BranchFalse, new JumpDescriptor(6)), // end
-        new Instruction(OperatorCode.LoadConstantCharacter, new CharacterDescriptor('A')),
+        new Instruction(OperationCode.LoadVariable, variableV),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(1)),
+        new Instruction(OperationCode.StoreVariable),
+        new Instruction(OperationCode.LoadVariable, variableV),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(10)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(3)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(0)),
+        new Instruction(OperationCode.Greater),
+        new Instruction(OperationCode.BranchFalse, new JumpDescriptor(3)), // dec
+        new Instruction(OperationCode.LessEqual),
+        new Instruction(OperationCode.BranchFalse, new JumpDescriptor(9)), // end
+        new Instruction(OperationCode.Branch, new JumpDescriptor(2)), // body
+        new Instruction(OperationCode.GreaterEqual),
+        new Instruction(OperationCode.BranchFalse, new JumpDescriptor(6)), // end
+        new Instruction(OperationCode.LoadConstantCharacter, new CharacterDescriptor('A')),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
         ),
-        new Instruction(OperatorCode.LoadVariable, variableV),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(3)),
+        new Instruction(OperationCode.LoadVariable, variableV),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(3)),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Inc, new IntegerDescriptor(2)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Inc, new IntegerDescriptor(2)),
         ),
-        new Instruction(OperatorCode.Branch, new JumpDescriptor(-17)), // cond
+        new Instruction(OperationCode.Branch, new JumpDescriptor(-17)), // cond
     );
     entry.declarations.variables.push(variableV);
     expectedIL.components.push(entry);
@@ -156,15 +156,15 @@ END Expr;`;
     const entry = new ComponentDescriptor('Expr');
     const variableV = new VariableDescriptor('v', new IntegerDescriptor(), true);
     entry.activity.instructions.push(
-        new Instruction(OperatorCode.LoadVariable, variableV),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(5)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(3)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(7)),
-        new Instruction(OperatorCode.Multiply),
-        new Instruction(OperatorCode.Subtract),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(8)),
-        new Instruction(OperatorCode.Add),
-        new Instruction(OperatorCode.StoreVariable),
+        new Instruction(OperationCode.LoadVariable, variableV),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(5)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(3)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(7)),
+        new Instruction(OperationCode.Multiply),
+        new Instruction(OperationCode.Subtract),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(8)),
+        new Instruction(OperationCode.Add),
+        new Instruction(OperationCode.StoreVariable),
     );
     entry.declarations.variables.push(variableV);
     expectedIL.components.push(entry);
@@ -191,15 +191,15 @@ END Expr;`;
     const entry = new ComponentDescriptor('Expr');
     const variableV = new VariableDescriptor('v', new IntegerDescriptor(), true);
     entry.finally.instructions.push(
-        new Instruction(OperatorCode.LoadVariable, variableV),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(5)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(3)),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(7)),
-        new Instruction(OperatorCode.Multiply),
-        new Instruction(OperatorCode.Subtract),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(8)),
-        new Instruction(OperatorCode.Add),
-        new Instruction(OperatorCode.StoreVariable),
+        new Instruction(OperationCode.LoadVariable, variableV),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(5)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(3)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(7)),
+        new Instruction(OperationCode.Multiply),
+        new Instruction(OperationCode.Subtract),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(8)),
+        new Instruction(OperationCode.Add),
+        new Instruction(OperationCode.StoreVariable),
     );
     entry.declarations.variables.push(variableV);
     expectedIL.components.push(entry);
@@ -226,9 +226,9 @@ END Expr;`;
     const entry = new ComponentDescriptor('Expr');
     const variableV = new VariableDescriptor('v', new BooleanDescriptor(), true);
     entry.finally.instructions.push(
-        new Instruction(OperatorCode.LoadVariable, variableV),
-        new Instruction(OperatorCode.LoadConstantBoolean, new BooleanDescriptor()),
-        new Instruction(OperatorCode.StoreVariable),
+        new Instruction(OperationCode.LoadVariable, variableV),
+        new Instruction(OperationCode.LoadConstantBoolean, new BooleanDescriptor()),
+        new Instruction(OperationCode.StoreVariable),
     );
     entry.declarations.variables.push(variableV);
     expectedIL.components.push(entry);
@@ -253,14 +253,14 @@ END Expr;`;
     const expectedIL = new IL();
     const entry = new ComponentDescriptor('Expr');
     entry.finally.instructions.push(
-        new Instruction(OperatorCode.LoadConstantFloat, new FloatDescriptor(Math.PI)),
+        new Instruction(OperationCode.LoadConstantFloat, new FloatDescriptor(Math.PI)),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Cos, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Cos, new IntegerDescriptor(1)),
         ),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
         ),
     );
     expectedIL.components.push(entry);
@@ -286,14 +286,14 @@ END Expr;`;
     const expectedIL = new IL();
     const entry = new ComponentDescriptor('Expr');
     entry.finally.instructions.push(
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(5)),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(5)),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.ToReal, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.ToReal, new IntegerDescriptor(1)),
         ),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
         ),
     );
     expectedIL.components.push(entry);
@@ -321,18 +321,18 @@ END Expr;`;
     const expectedIL = new IL();
     const entry = new ComponentDescriptor('Expr');
     entry.begin.instructions.push(
-        new Instruction(OperatorCode.LoadConstantBoolean, new BooleanDescriptor(true)),
-        new Instruction(OperatorCode.BranchFalse, new JumpDescriptor(4)),
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('LOOPING')),
+        new Instruction(OperationCode.LoadConstantBoolean, new BooleanDescriptor(true)),
+        new Instruction(OperationCode.BranchFalse, new JumpDescriptor(4)),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('LOOPING')),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
         ),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.WriteLine, new IntegerDescriptor(0)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.WriteLine, new IntegerDescriptor(0)),
         ),
-        new Instruction(OperatorCode.Branch, new JumpDescriptor(-6)),
+        new Instruction(OperationCode.Branch, new JumpDescriptor(-6)),
     );
     expectedIL.components.push(entry);
     expectedIL.entryPoints.push(entry);
@@ -362,24 +362,24 @@ END HelloWorld2;`;
     const expectedIL = new IL();
     const entry = new ComponentDescriptor('HelloWorld');
     entry.begin.instructions.push(
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Hello World')),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Hello World')),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
         ),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.WriteLine, new IntegerDescriptor(0)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.WriteLine, new IntegerDescriptor(0)),
         ),
     );
     expectedIL.components.push(entry);
     expectedIL.entryPoints.push(entry);
     const entry2 = new ComponentDescriptor('HelloWorld2');
     entry2.begin.instructions.push(
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Hello World\n')),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Hello World\n')),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
         ),
     );
     expectedIL.components.push(entry2);
@@ -546,8 +546,8 @@ END Connector;
 `;
     const expectedIL = new IL();
     const writeSysCall = new Instruction(
-        OperatorCode.SystemCall,
-        new SystemCallDescriptor(SystemCallOperator.Write, new IntegerDescriptor(1)),
+        OperationCode.SystemCall,
+        new SystemCallDescriptor(SystemCallOperation.Write, new IntegerDescriptor(1)),
     );
     // interface HelloWorld
     const helloMessage = new MessageDescriptor('Hello');
@@ -573,36 +573,36 @@ END Connector;
     // order is important for deep equal this can easily cause issues.
     helloWorld.declarations.variables.push(worldTextVar, inputVar);
     helloWorld.declarations.init.instructions.push(
-        new Instruction(OperatorCode.LoadVariable, worldTextVar),
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('World')),
-        new Instruction(OperatorCode.StoreVariable),
+        new Instruction(OperationCode.LoadVariable, worldTextVar),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('World')),
+        new Instruction(OperationCode.StoreVariable),
     );
     helloWorld.begin.instructions.push(
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Hello World Starting\n')),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Hello World Starting\n')),
         writeSysCall,
     );
     helloWorld.finally.instructions.push(
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Goodbye Hello World\n')),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Goodbye Hello World\n')),
         writeSysCall,
     );
 
     // implementation HelloWorld
     const helloWorldImpl = new ImplementationDescriptor(helloWorldService);
     helloWorldImpl.begin.instructions.push(
-        new Instruction(OperatorCode.LoadThis),
-        new Instruction(OperatorCode.ReceiveTest, helloMessage),
-        new Instruction(OperatorCode.BranchFalse, new JumpDescriptor(11)),
-        new Instruction(OperatorCode.LoadVariable, inputVar),
-        new Instruction(OperatorCode.LoadThis),
-        new Instruction(OperatorCode.Receive, helloMessage),
-        new Instruction(OperatorCode.LoadVariable, inputVar),
+        new Instruction(OperationCode.LoadThis),
+        new Instruction(OperationCode.ReceiveTest, helloMessage),
+        new Instruction(OperationCode.BranchFalse, new JumpDescriptor(11)),
+        new Instruction(OperationCode.LoadVariable, inputVar),
+        new Instruction(OperationCode.LoadThis),
+        new Instruction(OperationCode.Receive, helloMessage),
+        new Instruction(OperationCode.LoadVariable, inputVar),
         writeSysCall,
-        new Instruction(OperatorCode.LoadConstantCharacter, new CharacterDescriptor(' ')),
+        new Instruction(OperationCode.LoadConstantCharacter, new CharacterDescriptor(' ')),
         writeSysCall,
-        new Instruction(OperatorCode.LoadVariable, worldTextVar),
-        new Instruction(OperatorCode.LoadThis),
-        new Instruction(OperatorCode.Send, worldMessage),
-        new Instruction(OperatorCode.Branch, new JumpDescriptor(-14)),
+        new Instruction(OperationCode.LoadVariable, worldTextVar),
+        new Instruction(OperationCode.LoadThis),
+        new Instruction(OperationCode.Send, worldMessage),
+        new Instruction(OperationCode.Branch, new JumpDescriptor(-14)),
     );
     helloWorld.implementations.push(helloWorldImpl);
     expectedIL.components.push(helloWorld);
@@ -615,33 +615,33 @@ END Connector;
     const iVar = new VariableDescriptor('i', new IntegerDescriptor(), true);
     sender.declarations.variables.push(iVar, worldVar);
     sender.activity.instructions.push(
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Starting Sender\n')),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Starting Sender\n')),
         writeSysCall,
-        new Instruction(OperatorCode.LoadVariable, iVar),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(1)),
-        new Instruction(OperatorCode.StoreVariable),
-        new Instruction(OperatorCode.LoadVariable, iVar),
-        new Instruction(OperatorCode.LoadConstantInteger, new IntegerDescriptor(10)),
-        new Instruction(OperatorCode.LessEqual),
-        new Instruction(OperatorCode.BranchFalse, new JumpDescriptor(15)),
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Sending\n')),
+        new Instruction(OperationCode.LoadVariable, iVar),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(1)),
+        new Instruction(OperationCode.StoreVariable),
+        new Instruction(OperationCode.LoadVariable, iVar),
+        new Instruction(OperationCode.LoadConstantInteger, new IntegerDescriptor(10)),
+        new Instruction(OperationCode.LessEqual),
+        new Instruction(OperationCode.BranchFalse, new JumpDescriptor(15)),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Sending\n')),
         writeSysCall,
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('Hello')),
-        new Instruction(OperatorCode.LoadThis),
-        new Instruction(OperatorCode.LoadService, helloWorldService),
-        new Instruction(OperatorCode.Send, helloMessage),
-        new Instruction(OperatorCode.LoadVariable, worldVar),
-        new Instruction(OperatorCode.LoadThis),
-        new Instruction(OperatorCode.LoadService, helloWorldService),
-        new Instruction(OperatorCode.Receive, worldMessage),
-        new Instruction(OperatorCode.LoadVariable, worldVar),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('Hello')),
+        new Instruction(OperationCode.LoadThis),
+        new Instruction(OperationCode.LoadService, helloWorldService),
+        new Instruction(OperationCode.Send, helloMessage),
+        new Instruction(OperationCode.LoadVariable, worldVar),
+        new Instruction(OperationCode.LoadThis),
+        new Instruction(OperationCode.LoadService, helloWorldService),
+        new Instruction(OperationCode.Receive, worldMessage),
+        new Instruction(OperationCode.LoadVariable, worldVar),
         writeSysCall,
-        new Instruction(OperatorCode.LoadVariable, iVar),
+        new Instruction(OperationCode.LoadVariable, iVar),
         new Instruction(
-            OperatorCode.SystemCall,
-            new SystemCallDescriptor(SystemCallOperator.Inc, new IntegerDescriptor(1)),
+            OperationCode.SystemCall,
+            new SystemCallDescriptor(SystemCallOperation.Inc, new IntegerDescriptor(1)),
         ),
-        new Instruction(OperatorCode.Branch, new JumpDescriptor(-19)),
+        new Instruction(OperationCode.Branch, new JumpDescriptor(-19)),
     );
     expectedIL.components.push(sender);
 
@@ -651,20 +651,20 @@ END Connector;
     const senderVar = new VariableDescriptor('sender', sender, true);
     entry.declarations.variables.push(helloWorldVar, senderVar);
     entry.begin.instructions.push(
-        new Instruction(OperatorCode.LoadConstantText, new TextDescriptor('STARTING CONNECTOR\n')),
+        new Instruction(OperationCode.LoadConstantText, new TextDescriptor('STARTING CONNECTOR\n')),
         writeSysCall,
-        new Instruction(OperatorCode.LoadVariable, helloWorldVar),
-        new Instruction(OperatorCode.New, helloWorld),
-        new Instruction(OperatorCode.LoadVariable, senderVar),
-        new Instruction(OperatorCode.New, sender),
-        new Instruction(OperatorCode.LoadVariable, helloWorldVar),
-        new Instruction(OperatorCode.LoadService, helloWorldService),
-        new Instruction(OperatorCode.LoadVariable, senderVar),
-        new Instruction(OperatorCode.Connect),
-        new Instruction(OperatorCode.LoadVariable, helloWorldVar),
-        new Instruction(OperatorCode.Delete),
-        new Instruction(OperatorCode.LoadVariable, senderVar),
-        new Instruction(OperatorCode.Delete),
+        new Instruction(OperationCode.LoadVariable, helloWorldVar),
+        new Instruction(OperationCode.New, helloWorld),
+        new Instruction(OperationCode.LoadVariable, senderVar),
+        new Instruction(OperationCode.New, sender),
+        new Instruction(OperationCode.LoadVariable, helloWorldVar),
+        new Instruction(OperationCode.LoadService, helloWorldService),
+        new Instruction(OperationCode.LoadVariable, senderVar),
+        new Instruction(OperationCode.Connect),
+        new Instruction(OperationCode.LoadVariable, helloWorldVar),
+        new Instruction(OperationCode.Delete),
+        new Instruction(OperationCode.LoadVariable, senderVar),
+        new Instruction(OperationCode.Delete),
     );
     expectedIL.components.push(entry);
     expectedIL.entryPoints.push(entry);
