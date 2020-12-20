@@ -65,6 +65,7 @@ import {
 import { Metadata } from './metadata';
 import { ILAssembler } from './il-assembler';
 import { getOrThrow } from '@composita/ts-utility-types';
+import { Generator } from './generator';
 
 export class CodeGeneratorVisitor extends Visitor {
     constructor(protected symbols: SymbolTable, public scope: ScopeSymbolType, protected metadata: Metadata) {
@@ -613,8 +614,13 @@ export class CodeGeneratorVisitor extends Visitor {
     visitProcedure(node: ProcedureNode): void {
         const symbol = getOrThrow(this.symbols.procedureToSymbol.get(node));
         const visitor = new CodeGeneratorVisitor(this.symbols, symbol, this.metadata);
-        node.getStatements()?.accept(visitor);
         const descriptor = this.metadata.findProcedure(symbol);
+        node.getDeclarations()
+            .filter((declaration) => declaration instanceof VariableListNode || declaration instanceof ConstantListNode)
+            .forEach((declaration) => declaration.accept(visitor));
+        descriptor.declarations.init.instructions.push(...visitor.getInstructions());
+        Generator.fillDeclarations(descriptor.declarations, symbol, this.metadata, this.symbols);
+        node.getStatements()?.accept(visitor);
         descriptor.begin.instructions.push(...visitor.getInstructions());
     }
 }
@@ -627,6 +633,7 @@ export class ImplementationGeneratorVisitor extends Visitor {
     visitImplementation(node: ImplementationNode): void {
         const descriptor = this.metadata.findImplementation(this.symbol);
         let visitor = new CodeGeneratorVisitor(this.symbols, this.symbol, this.metadata);
+        Generator.fillDeclarations(descriptor.declarations, this.symbol, this.metadata, this.symbols);
         node.getDeclarations()
             .filter((declaration) => declaration instanceof VariableListNode || declaration instanceof ConstantListNode)
             .forEach((declaration) => declaration.accept(visitor));

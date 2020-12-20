@@ -9,8 +9,16 @@ import {
     MessageDescriptor,
     TextDescriptor,
     IntegerDescriptor,
+    DeclarationDescriptor,
 } from '@composita/il';
-import { SymbolTable, ComponentSymbol, BuiltInTypeSymbol, TypeSymbol, InterfaceSymbol } from '../symbols/symbols';
+import {
+    SymbolTable,
+    ComponentSymbol,
+    BuiltInTypeSymbol,
+    TypeSymbol,
+    InterfaceSymbol,
+    ScopeSymbolType,
+} from '../symbols/symbols';
 import { ComponentGeneratorVisitor } from './code-generator';
 import { Metadata } from './metadata';
 import { ComponentNode } from '../ast/ast';
@@ -122,6 +130,23 @@ export class Generator {
         symbols;
     }
 
+    static fillDeclarations(
+        declarations: DeclarationDescriptor,
+        symbol: ScopeSymbolType,
+        metadata: Metadata,
+        symbols: SymbolTable,
+    ): void {
+        symbols
+            .getVariables(symbol)
+            .forEach((variable) => declarations.variables.push(metadata.findVariable(variable)));
+        symbols
+            .getCollectionVariables(symbol)
+            .forEach((variable) => declarations.variables.push(metadata.findVariable(variable)));
+        symbols
+            .getProcedures(symbol)
+            .forEach((procedure) => declarations.procedures.push(metadata.findProcedure(procedure)));
+    }
+
     private fillComponent(component: ComponentSymbol, metadata: Metadata, symbols: SymbolTable): void {
         const descriptor = metadata.findComponent(component);
         component.genericType.offered.forEach((interfaceDeclaration) =>
@@ -133,15 +158,7 @@ export class Generator {
         symbols
             .getImplementations(component)
             .forEach((implementation) => descriptor.implementations.push(metadata.findImplementation(implementation)));
-        symbols
-            .getVariables(component)
-            .forEach((variable) => descriptor.declarations.variables.push(metadata.findVariable(variable)));
-        symbols
-            .getCollectionVariables(component)
-            .forEach((variable) => descriptor.declarations.variables.push(metadata.findVariable(variable)));
-        symbols
-            .getProcedures(component)
-            .forEach((procedure) => descriptor.declarations.procedures.push(metadata.findProcedure(procedure)));
+        Generator.fillDeclarations(descriptor.declarations, component, metadata, symbols);
     }
 
     private generateComponent(component: ComponentSymbol, symbols: SymbolTable, il: IL, metadata: Metadata): void {
