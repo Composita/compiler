@@ -587,22 +587,16 @@ export class CodeGeneratorVisitor extends Visitor {
         //const block = this.assembler.createLabel();
         //this.assembler.setLabel(block);
         const designator = node.getDesignator();
-        if (designator === undefined) {
-            this.assembler.emit(OperatorCode.LoadThis);
-        } else {
-            designator.accept(this);
-        }
+        this.assembler.emit(OperatorCode.LoadThis);
+        designator?.accept(this);
         this.assembler.emit(OperatorCode.ReceiveTest, this.metadata.findMessage(message));
         //this.assembler.emitBranchFalse(block);
     }
 
     visitInputTest(node: InputTestNode): void {
         const designator = node.getDesignator();
-        if (designator === undefined) {
-            this.assembler.emit(OperatorCode.LoadThis);
-        } else {
-            designator.accept(this);
-        }
+        this.assembler.emit(OperatorCode.LoadThis);
+        designator?.accept(this);
         this.assembler.emit(OperatorCode.InputTest);
     }
 
