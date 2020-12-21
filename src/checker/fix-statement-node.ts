@@ -254,13 +254,14 @@ export class FixStatementNodeVisitor extends Visitor {
         if (variable.parameters.length < node.getDesignators().length) {
             throw new Error('Foreach designator match error.');
         }
-        node.getDesignators().forEach((designator, index) => {
+        node.getDesignators().forEach((designator) => {
             if (!(designator instanceof BasicDesignatorNode)) {
                 throw new Error('Only basic designators supported.');
             }
-            this.symbolTable.registerVariable(
-                new VariableSymbol(this.scope, designator.getName().getName(), true, variable.parameters[index]),
-            );
+            // the following woud register a new variable, but the language does not allow for that.
+            //this.symbolTable.registerVariable(
+            //    new VariableSymbol(this.scope, designator.getName().getName(), true, variable.parameters[index]),
+            //);
             designator.accept(new FixExpressionNodeVisitor(this.symbolTable, newScope));
         });
         node.getBody().accept(new FixStatementNodeVisitor(this.symbolTable, newScope));
