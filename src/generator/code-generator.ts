@@ -462,17 +462,18 @@ export class CodeGeneratorVisitor extends Visitor {
     }
 
     visitForeach(node: ForeachNode): void {
-        console.warn('FOREACH is not yet fully supported by the code generator and runtime.');
-        const conditionLabel = this.assembler.createLabel();
+        const loadLabel = this.assembler.createLabel();
         const forEnd = this.assembler.createLabel();
-        this.assembler.setLabel(conditionLabel);
+        this.assembler.emit(OperationCode.BeginForEach);
+        this.assembler.setLabel(loadLabel);
         node.getDesignators().forEach((designator) => designator.accept(this));
         node.getOf().accept(this);
-        this.assembler.emitSystemCall(SystemCallOperation.LoadForEachDesignators, node.getDesignators().length);
+        this.assembler.emit(OperationCode.AssignArrayIndex);
         this.assembler.emitBranchFalse(forEnd);
         node.getBody().accept(this);
-        this.assembler.emitBranch(conditionLabel);
+        this.assembler.emitBranch(loadLabel);
         this.assembler.setLabel(forEnd);
+        this.assembler.emit(OperationCode.EndForEach);
     }
 
     visitStatementBlock(node: StatementBlockNode): void {
@@ -516,7 +517,15 @@ export class CodeGeneratorVisitor extends Visitor {
     visitTypeCheck(node: TypeCheckExpressionNode): void {
         node.getDesignator().accept(this);
         node.getType().accept(this);
-        this.assembler.emit(OperationCode.IsType);
+        const type = this.symbols.typeToSymbol.get(node.getType());
+        if (type === undefined) {
+            throw new Error('Unknown type in type check.');
+        }
+        if (type instanceof ComponentSymbol) {
+            this.assembler.emit(OperationCode.IsType, this.metadata.findComponent(type));
+            return;
+        }
+        throw new Error('Unknown type check. Required component type.');
     }
 
     visitUnaryTermNode(node: UnaryTermNode): void {
