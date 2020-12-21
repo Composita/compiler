@@ -51,7 +51,7 @@ import {
     VariableListNode,
     BasicExpressionDesignatorNode,
 } from '../ast/ast';
-import { Instruction, OperationCode, SystemCallOperation } from '@composita/il';
+import { Instruction, IntegerDescriptor, OperationCode, SystemCallOperation } from '@composita/il';
 import {
     SymbolTable,
     ScopeSymbolType,
@@ -97,9 +97,15 @@ export class CodeGeneratorVisitor extends Visitor {
             }
         }
 
-        if (symbol instanceof VariableSymbol || symbol instanceof CollectionVariableSymbol) {
+        if (symbol instanceof VariableSymbol) {
             const variable = this.metadata.findVariable(symbol);
             this.assembler.emit(OperationCode.LoadVariable, variable);
+            return;
+        }
+
+        if (symbol instanceof CollectionVariableSymbol) {
+            const variable = this.metadata.findVariable(symbol);
+            this.assembler.emit(OperationCode.LoadArrayVariable, variable);
             return;
         }
 
@@ -119,7 +125,7 @@ export class CodeGeneratorVisitor extends Visitor {
         if (symbol instanceof CollectionVariableSymbol) {
             const variable = this.metadata.findVariable(symbol);
             node.getExpressions().forEach((expr) => expr.accept(this));
-            this.assembler.emit(OperationCode.LoadVariable, variable);
+            this.assembler.emit(OperationCode.LoadArrayVariableElement, variable);
             return;
         }
 
@@ -285,15 +291,16 @@ export class CodeGeneratorVisitor extends Visitor {
         const designatorNode = node.getDesignator();
         const designator = this.symbols.designatorToSymbol.get(designatorNode);
         node.getArgs().forEach((arg) => arg.accept(this));
+        const nArgs = new IntegerDescriptor(node.getArgs().length);
         designatorNode.accept(this);
         if (designator instanceof VariableSymbol || designator instanceof CollectionVariableSymbol) {
             const type = designator.type;
             if (type instanceof ComponentSymbol) {
-                this.assembler.emit(OperationCode.New, this.metadata.findComponent(type));
+                this.assembler.emit(OperationCode.New, this.metadata.findComponent(type), nArgs);
                 return;
             }
             if (type instanceof BuiltInTypeSymbol) {
-                this.assembler.emit(OperationCode.New, this.metadata.builtInTypeDescriptor(type));
+                this.assembler.emit(OperationCode.New, this.metadata.builtInTypeDescriptor(type), nArgs);
                 return;
             }
         }
