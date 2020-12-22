@@ -570,6 +570,7 @@ export class Parser {
                 return new OffersRequiresExpressionNode(
                     SourceLocation.merge(start, offeredList[offeredList.length - 1].getLocation()),
                     attributes,
+                    simpleExpression,
                     OffersRequiresOperator.Offers,
                     offeredList,
                 );
@@ -579,6 +580,7 @@ export class Parser {
                 return new OffersRequiresExpressionNode(
                     SourceLocation.merge(start, requiredList[requiredList.length - 1].getLocation()),
                     attributes,
+                    simpleExpression,
                     OffersRequiresOperator.Requires,
                     requiredList,
                 );

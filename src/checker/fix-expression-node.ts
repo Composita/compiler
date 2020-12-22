@@ -116,6 +116,7 @@ export class FixExpressionNodeVisitor extends Visitor {
 
     visitOffersRequiresExpression(node: OffersRequiresExpressionNode): void {
         this.visitAttributes(node.getAttributes());
+        node.getDesignator().accept(this);
         node.getInterfaces().forEach((iface) => iface.accept(this));
         this.symbolTable.expressionToSymbol.set(node, this.getBuiltIn('BOOLEAN'));
     }
@@ -123,7 +124,7 @@ export class FixExpressionNodeVisitor extends Visitor {
     visitTypeCheck(node: TypeCheckExpressionNode): void {
         this.visitAttributes(node.getAttributes());
         node.getDesignator().accept(this);
-        node.getType().accept(this);
+        node.getType().accept(new FixTypeNodeVisitor(this.symbolTable, this.scope));
         this.symbolTable.expressionToSymbol.set(node, this.getBuiltIn('BOOLEAN'));
     }
 

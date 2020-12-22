@@ -493,6 +493,38 @@ END ProducerConsumer;`;
     test.end();
 });
 
+tape('Foreach Looper', (test) => {
+    const code = `COMPONENT { ENTRYPOINT } Looper;
+VARIABLE
+  room[number: INTEGER; name: TEXT]: INTEGER;
+  i: INTEGER;
+  t: TEXT;
+CONSTANT
+  limit = 10;
+BEGIN
+  FOR i := 1 TO limit DO
+    room[i, TEXT("T")] := i * 10
+  END;
+  IF i IS INTEGER THEN
+    WRITE("i is an INTEGER")
+  END;
+  FOREACH i, t OF room DO
+    WRITE(i); WRITE(" "); WRITE(t); WRITE(" ");
+    WRITE(room[i, t]); WRITELINE
+  END
+END Looper;`;
+    const uri = '';
+    const diagnosis = new CompilerDiagnosis();
+    const lexer = new Lexer(diagnosis, uri, code);
+    const parser = new Parser(diagnosis, lexer);
+    const checker = new Checker();
+    const symbols = checker.check(uri, parser.parse());
+    const generator = new Generator();
+    const il = generator.generate(symbols);
+    test.deepEqual(il, il, 'Two component IL compare');
+    test.end();
+});
+
 // objectPrintDepth not yet supported by @types/tape
 const options = {
     /* objectPrintDepth: 5, */

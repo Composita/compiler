@@ -98,10 +98,15 @@ export class OffersRequiresExpressionNode extends AttributedExpressionNode {
     constructor(
         location: SourceLocation,
         attributes: Array<AttributeNode>,
+        private designator: DesignatorNode,
         private op: OffersRequiresOperator,
         private interfaces: NonEmptyArray<InterfaceDeclarationNode>,
     ) {
         super(location, attributes);
+    }
+
+    getDesignator(): DesignatorNode {
+        return this.designator;
     }
 
     getOp(): OffersRequiresOperator {

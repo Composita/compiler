@@ -50,6 +50,7 @@ import {
     ConstantListNode,
     VariableListNode,
     BasicExpressionDesignatorNode,
+    OffersRequiresExpressionNode,
 } from '../ast/ast';
 import { Instruction, IntegerDescriptor, OperationCode, SystemCallOperation, TextDescriptor } from '@composita/il';
 import {
@@ -521,11 +522,16 @@ export class CodeGeneratorVisitor extends Visitor {
         }
     }
 
-    // TODO
-    //visitOffersRequiresExpression(_node: OffersRequiresExpressionNode): void {
-    //}
+    visitOffersRequiresExpression(node: OffersRequiresExpressionNode): void {
+        node.getAttributes().forEach((attr) => attr.accept(this));
+        // TODO
+        //node.getDesignator().accept(this);
+        //node.getInterfaces().forEach((iface) => this.metadata.findInterface(iface));
+        node.getAttributes().forEach((attribute) => this.handleLockRelease(attribute));
+    }
 
     visitTypeCheck(node: TypeCheckExpressionNode): void {
+        node.getAttributes().forEach((attr) => attr.accept(this));
         node.getDesignator().accept(this);
         node.getType().accept(this);
         const type = this.symbols.typeToSymbol.get(node.getType());
@@ -534,6 +540,12 @@ export class CodeGeneratorVisitor extends Visitor {
         }
         if (type instanceof ComponentSymbol) {
             this.assembler.emit(OperationCode.IsType, this.metadata.findComponent(type));
+            node.getAttributes().forEach((attribute) => this.handleLockRelease(attribute));
+            return;
+        }
+        if (type instanceof BuiltInTypeSymbol) {
+            this.assembler.emit(OperationCode.IsType, this.metadata.builtInTypeDescriptor(type));
+            node.getAttributes().forEach((attribute) => this.handleLockRelease(attribute));
             return;
         }
         throw new Error('Unknown type check. Required component type.');
