@@ -566,14 +566,13 @@ END Connector;
     helloWorld.offers.push(helloWorldService);
     // TODO all variables are mutable for now
     const worldTextVar = new VariableDescriptor('world', new TextDescriptor(), true);
-    // TODO currently not supported. CollectionVariables are always mutable but text is a special case.
     worldTextVar.indexTypes.push(new IntegerDescriptor());
     const inputVar = new VariableDescriptor('input', new TextDescriptor(), true);
     inputVar.indexTypes.push(new IntegerDescriptor());
     // order is important for deep equal this can easily cause issues.
-    helloWorld.declarations.variables.push(worldTextVar, inputVar);
+    helloWorld.declarations.variables.push(inputVar, worldTextVar);
     helloWorld.declarations.init.instructions.push(
-        new Instruction(OperationCode.LoadVariable, worldTextVar),
+        new Instruction(OperationCode.LoadArrayVariable, worldTextVar),
         new Instruction(OperationCode.LoadConstantText, new TextDescriptor('World')),
         new Instruction(OperationCode.StoreVariable),
     );
@@ -592,14 +591,14 @@ END Connector;
         new Instruction(OperationCode.LoadThis),
         new Instruction(OperationCode.ReceiveTest, helloMessage),
         new Instruction(OperationCode.BranchFalse, new JumpDescriptor(11)),
-        new Instruction(OperationCode.LoadVariable, inputVar),
+        new Instruction(OperationCode.LoadArrayVariable, inputVar),
         new Instruction(OperationCode.LoadThis),
         new Instruction(OperationCode.Receive, helloMessage),
-        new Instruction(OperationCode.LoadVariable, inputVar),
+        new Instruction(OperationCode.LoadArrayVariable, inputVar),
         writeSysCall,
         new Instruction(OperationCode.LoadConstantCharacter, new CharacterDescriptor(' ')),
         writeSysCall,
-        new Instruction(OperationCode.LoadVariable, worldTextVar),
+        new Instruction(OperationCode.LoadArrayVariable, worldTextVar),
         new Instruction(OperationCode.LoadThis),
         new Instruction(OperationCode.Send, worldMessage),
         new Instruction(OperationCode.Branch, new JumpDescriptor(-14)),
@@ -630,11 +629,11 @@ END Connector;
         new Instruction(OperationCode.LoadThis),
         new Instruction(OperationCode.LoadService, helloWorldService),
         new Instruction(OperationCode.Send, helloMessage),
-        new Instruction(OperationCode.LoadVariable, worldVar),
+        new Instruction(OperationCode.LoadArrayVariable, worldVar),
         new Instruction(OperationCode.LoadThis),
         new Instruction(OperationCode.LoadService, helloWorldService),
         new Instruction(OperationCode.Receive, worldMessage),
-        new Instruction(OperationCode.LoadVariable, worldVar),
+        new Instruction(OperationCode.LoadArrayVariable, worldVar),
         writeSysCall,
         new Instruction(OperationCode.LoadVariable, iVar),
         new Instruction(
@@ -654,9 +653,9 @@ END Connector;
         new Instruction(OperationCode.LoadConstantText, new TextDescriptor('STARTING CONNECTOR\n')),
         writeSysCall,
         new Instruction(OperationCode.LoadVariable, helloWorldVar),
-        new Instruction(OperationCode.New, helloWorld),
+        new Instruction(OperationCode.New, helloWorld, new IntegerDescriptor()),
         new Instruction(OperationCode.LoadVariable, senderVar),
-        new Instruction(OperationCode.New, sender),
+        new Instruction(OperationCode.New, sender, new IntegerDescriptor()),
         new Instruction(OperationCode.LoadVariable, helloWorldVar),
         new Instruction(OperationCode.LoadService, helloWorldService),
         new Instruction(OperationCode.LoadVariable, senderVar),
@@ -683,8 +682,67 @@ END Connector;
         expectedIL.entryPoints[0].begin.instructions.length,
         'Equal instruction number',
     );
+    test.deepEqual(
+        il.entryPoints[0].begin.instructions.map((instr) => instr.code),
+        expectedIL.entryPoints[0].begin.instructions.map((instr) => instr.code),
+        'Equal entry begin instruction codes',
+    );
+    test.deepEqual(
+        il.entryPoints[0].begin.instructions.map((instr) => instr.arguments),
+        expectedIL.entryPoints[0].begin.instructions.map((instr) => instr.arguments),
+        'Equal entry begin instruction args',
+    );
+    il.entryPoints[0].offers.forEach((instr, i) => {
+        test.deepEqual(instr, expectedIL.entryPoints[0].offers[i], `Entry Offer i: ${i}`);
+    });
+    il.entryPoints[0].requires.forEach((instr, i) => {
+        test.deepEqual(instr, expectedIL.entryPoints[0].requires[i], `Entry Require i: ${i}`);
+    });
+    il.entryPoints[0].begin.instructions.forEach((instr, i) => {
+        test.deepEqual(instr, expectedIL.entryPoints[0].begin.instructions[i], `Entry Instruction i: ${i}`);
+    });
     test.deepEqual(il.components[0], expectedIL.components[0], 'Component 0 equal.');
+    il.components[0].declarations.init.instructions.forEach((instr, i) => {
+        test.deepEqual(
+            instr,
+            expectedIL.components[0].declarations.init.instructions[i],
+            `Comp[0] Init Instruction i: ${i}`,
+        );
+    });
+    il.components[0].declarations.variables.forEach((instr, i) => {
+        test.deepEqual(instr, expectedIL.components[0].declarations.variables[i], `Comp[0] Variables i: ${i}`);
+    });
+    il.components[0].begin.instructions.forEach((instr, i) => {
+        test.deepEqual(instr, expectedIL.components[0].begin.instructions[i], `Comp[0] Begin Instruction i: ${i}`);
+    });
+    il.components[0].finally.instructions.forEach((instr, i) => {
+        test.deepEqual(instr, expectedIL.components[0].finally.instructions[i], `Comp[0] Finally Instruction i: ${i}`);
+    });
+    il.components[0].implementations[0].begin.instructions.forEach((instr, i) => {
+        test.deepEqual(
+            instr,
+            expectedIL.components[0].implementations[0].begin.instructions[i],
+            `Comp[0] Impl Instruction i: ${i}`,
+        );
+    });
+    il.components[0].implementations[0].begin.instructions.forEach((instr, i) => {
+        test.deepEqual(
+            instr,
+            expectedIL.components[0].implementations[0].begin.instructions[i],
+            `Comp[0] Impl Instruction i: ${i}`,
+        );
+    });
     test.deepEqual(il.components[1], expectedIL.components[1], 'Component 1 equal.');
+    il.components[1].begin.instructions.forEach((instr, i) => {
+        test.deepEqual(instr, expectedIL.components[1].begin.instructions[i], `Comp[1] Activity Instruction i: ${i}`);
+    });
+    il.components[1].activity.instructions.forEach((instr, i) => {
+        test.deepEqual(
+            instr,
+            expectedIL.components[1].activity.instructions[i],
+            `Comp[1] Activity Instruction i: ${i}`,
+        );
+    });
     test.deepEqual(
         il.components[1].declarations,
         expectedIL.components[1].declarations,

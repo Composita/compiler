@@ -51,7 +51,7 @@ import {
     VariableListNode,
     BasicExpressionDesignatorNode,
 } from '../ast/ast';
-import { Instruction, IntegerDescriptor, OperationCode, SystemCallOperation } from '@composita/il';
+import { Instruction, IntegerDescriptor, OperationCode, SystemCallOperation, TextDescriptor } from '@composita/il';
 import {
     SymbolTable,
     ScopeSymbolType,
@@ -281,7 +281,11 @@ export class CodeGeneratorVisitor extends Visitor {
         node.getConstants().forEach((constant) => {
             const symbol = getOrThrow(this.symbols.variableToSymbol.get(constant));
             const variable = this.metadata.findVariable(symbol);
-            this.assembler.emit(OperationCode.LoadVariable, variable);
+            if (variable.type instanceof TextDescriptor || variable.indexTypes.length > 0) {
+                this.assembler.emit(OperationCode.LoadArrayVariable, variable);
+            } else {
+                this.assembler.emit(OperationCode.LoadVariable, variable);
+            }
             constant.getExpression().getExpression().accept(this);
             this.assembler.emit(OperationCode.StoreVariable);
         });

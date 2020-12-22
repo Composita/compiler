@@ -161,9 +161,6 @@ export class FixStatementNodeVisitor extends Visitor {
     }
 
     visitSend(node: SendNode): void {
-        if (node.getTarget().getName() === 'FINISHED') {
-            throw new Error('foo');
-        }
         this.symbolTable.sendReceiveToSymbol.set(
             node,
             CheckerHelper.getMessage(

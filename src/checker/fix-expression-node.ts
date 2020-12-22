@@ -1,5 +1,4 @@
 import { getFirstOrThrow, getOrThrow } from '@composita/ts-utility-types';
-import { type } from 'os';
 import {
     Visitor,
     ConstantExpressionNode,
@@ -380,7 +379,8 @@ export class FixExpressionNodeVisitor extends Visitor {
             const variable = getFirstOrThrow(
                 this.symbolTable.findCollectionVariable(name, false, types, new SearchOptions(this.scope, false, true)),
             );
-            if (type instanceof BuiltInTypeSymbol && type.identifier === 'TEXT') {
+            const hasParams = variable.parameters.length > 0;
+            if (variable.type instanceof BuiltInTypeSymbol && variable.type.identifier === 'TEXT' && !hasParams) {
                 this.symbolTable.expressionToSymbol.set(
                     node,
                     getFirstOrThrow(this.symbolTable.findBuiltIn('CHARACTER')),

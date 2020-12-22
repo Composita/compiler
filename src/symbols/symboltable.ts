@@ -67,7 +67,10 @@ export class SymbolTable {
     public readonly expressionToSymbol = new Map<ExpressionNode, TypeSymbol>();
     public readonly typeToSymbol = new Map<TypeNode, TypeSymbol>();
     public readonly designatorToSymbol = new Map<DesignatorNode, NamedScopeSymbol>();
-    public readonly variableToSymbol = new Map<VariableNode | ConstantNode, VariableSymbol>();
+    public readonly variableToSymbol = new Map<
+        VariableNode | ConstantNode,
+        VariableSymbol | CollectionVariableSymbol
+    >();
     public readonly callToSymbol = new Map<ProcedureCallNode | FunctionCallNode, ProcedureSymbol>();
     public readonly sendReceiveToSymbol = new Map<SendNode | ReceiveNode, MessageSymbol>();
     public readonly patternToSymbol = new Map<MessagePattern, MessageSymbol>();

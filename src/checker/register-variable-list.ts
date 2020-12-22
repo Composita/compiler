@@ -26,16 +26,16 @@ export class VariableListRegisterVisitor extends Visitor {
         //const isMarkedArray = node.getAttributes().find((attr) => attr.getName().getName() === 'ARRAY');
         node.getNames().forEach((name) => {
             const identifier = name.getName();
-            const hasParams = name.getParams().length;
-            if (type instanceof BuiltInTypeSymbol && type.identifier === 'TEXT' /* || (isMarkedArray && !hasParams)*/) {
-                this.symbolTable.registerCollectionVariable(
-                    new CollectionVariableSymbol(
-                        this.scope,
-                        identifier,
-                        type,
-                        new Array<TypeSymbol>(getFirstOrThrow(this.symbolTable.findBuiltIn('INTEGER'))),
-                    ),
+            const hasParams = name.getParams().length > 0;
+            if (type instanceof BuiltInTypeSymbol && type.identifier === 'TEXT' && !hasParams) {
+                const variable = new CollectionVariableSymbol(
+                    this.scope,
+                    identifier,
+                    type,
+                    new Array<TypeSymbol>(getFirstOrThrow(this.symbolTable.findBuiltIn('INTEGER'))),
                 );
+                this.symbolTable.registerCollectionVariable(variable);
+                this.symbolTable.variableToSymbol.set(node, variable);
                 return;
             }
             if (!hasParams) {
@@ -44,15 +44,14 @@ export class VariableListRegisterVisitor extends Visitor {
                 this.symbolTable.variableToSymbol.set(node, variable);
                 return;
             }
-            this.symbolTable.registerCollectionVariable(
-                new CollectionVariableSymbol(
-                    this.scope,
-                    identifier,
-                    type,
-                    CheckerHelper.convertParamTypes(this.symbolTable, this.scope, name.getParams()),
-                ),
-                // TODO fix variable here as well.
+            const variable = new CollectionVariableSymbol(
+                this.scope,
+                identifier,
+                type,
+                CheckerHelper.convertParamTypes(this.symbolTable, this.scope, name.getParams()),
             );
+            this.symbolTable.registerCollectionVariable(variable);
+            this.symbolTable.variableToSymbol.set(node, variable);
         });
     }
 
